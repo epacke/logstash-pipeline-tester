@@ -1,0 +1,21 @@
+{
+  "name": "logtstash-pipeline-tester",
+  "version": "1.0.0",
+  "description": "Testing logstash pipelines",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "buffer": "^5.4.3",
+    "dgram": "^1.0.1",
+    "express": "^4.17.1",
+    "express-ws": "^4.0.0",
+    "http": "0.0.0",
+    "nodemon": "^2.0.2",
+    "superagent": "^5.2.2"
+  }
+}

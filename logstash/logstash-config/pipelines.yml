@@ -1,0 +1,8 @@
+# This file is where you define your pipelines. You can define multiple.
+# For more information on multiple pipelines, see the documentation:
+#   https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html
+
+- pipeline.id: f5-syslog
+  path.config: "/usr/share/logstash/pipeline/f5-syslog"
+- pipeline.id: generic-json
+  path.config: "/usr/share/logstash/pipeline/generic-json"

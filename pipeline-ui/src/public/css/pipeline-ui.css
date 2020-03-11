@@ -1,0 +1,15 @@
+table.table td:first-child {
+    width:100%;
+}
+
+table textarea#send-string {
+    width:100%;
+}
+
+input#send-port {
+    min-width:40px;
+}
+
+select#pipeline-select {
+    max-width: 300px;
+}

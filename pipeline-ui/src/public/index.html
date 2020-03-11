@@ -1,0 +1,84 @@
+<html>
+
+<head>
+    <script src="js/jquery.js"></script>
+    <script src="js/rainbowjson.js"></script>
+    <script src="js/bootstrap.bundle.js"></script>
+    <script src="js/pipeline-ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/rainbowjson.css">
+    <link rel="stylesheet" type="text/css" href="css/pipeline-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <title>Logstash pipeline tester</title>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <span class="h3 align-middle">Logstash pipeline tester</span>
+                <select id="pipeline-select" class="custom-select m-1 mt-3">
+                    <option value="">Select pipeline</option>
+                </select>
+                <div class="float-right">
+                    <button id="backend-status" class="btn btn-xs btn-danger m-1 mt-3 py-1">Backend not connected</button><button id="logstash-status" class="btn btn-xs btn-warning m-1 mt-3 py-1">Waiting for logstash</button>
+                </div>
+                <table id="send-table" class="table table-striped">
+                    <thead class="thead-dark">
+                        <th>Raw Log lines</th>
+                        <th>Port</th>
+                        <th>Protocol</th>
+                        <th>&nbsp</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><textarea id="send-string"></textarea></td>
+                            <td><input id="send-port"></td>
+                            <td>
+                                <select id="send-protocol">
+                                    <option value="UDP">UDP</option>
+                                    <option value="TCP">TCP</option>
+                                </select>
+                            </td>
+                            <td><button id="send-button">Send</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="logstash-result" class="label-info col-form-label-lg">Logstash result</label>
+                    <div id="logstash-result"></div>
+                </div>
+            </div>
+            <div class="col">
+                <label for="help-div" class="label-info col-form-label-lg">Help and tips</label>
+                <div id="help-div">
+                    <ol>
+                        <li>Wait until the pipelines has started and the logstash state turns green.</li>
+                        <li>Enter one or more raw log lines in the log line input field.</li>
+                        <li>Pick a predefined pipeline or enter port and protocol manually.</li>
+                        <li>Click send.</li>
+                        <li>Check out the result in the logstash text area to the right.</li>
+                        <li>Update the pipeline file if you're not happy with the outcome, logstash will automatically
+                            re-read the config when you save</li>
+                        <li>Rince, repeat</li>
+                    </ol>
+
+                    <p class="h6">Here's a few tips in case stuff does not work</p>
+                    <ul>
+                        <li>Pipelines in the Development environment needs to use the http output, look at other pipelines and copy if unsure.</li>
+                        <li>Pipelines can be configured to drop stuff. Then you won't get any result.</li>
+                        <li>Grok failures means that the line you send was not parseable by a grok expression in the pipeline.</li>
+                        <li>To troubleshoot Grok I can highly recommend the <a href="https://grokdebug.herokuapp.com/">Heroku Grok Debugger</a>.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
