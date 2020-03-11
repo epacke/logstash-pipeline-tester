@@ -22,9 +22,18 @@ $( document ).ready(function() {
         sendLogLines(sendString, port, protocol);
     });
 
+    // Autosize in case someone has cached content that exceeds two rows
     $('textarea#send-string').on('keyup', autoSize);
+    setTimeout(() => { triggerEvent('keyup', 'textarea#send-string')},500);
     preparePipelines();
 });
+
+function triggerEvent(e, s){
+    "use strict";
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent(e, true, true);
+    document.querySelector(s).dispatchEvent(event);
+}
 
 async function preparePipelines() {
     let res = await fetch('/pipelines');
