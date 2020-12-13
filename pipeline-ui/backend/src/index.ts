@@ -1,23 +1,24 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const net = require('net');
-const dgram = require('dgram');
-const request = require('superagent');
-const cors = require('cors');
-const getPipelines = require('./getpipelines');
+import express, {response} from 'express';
+import bodyParser from 'body-parser';
+import * as net from 'net';
+import * as dgram from 'dgram';
+import request from 'superagent';
+// @ts-ignore - Problem with the cors typing.
+import cors from 'cors';
+import getPipelines from './getpipelines';
+import { ILogstashAPIResponse, ILogstashStatus} from './interfaces';
+import { LOGSTASH } from './util/LogstashAddress';
 
-const app = express();
+const dummyApp = express();
 const port = 8080;
 
-const logstashInstance = 'logstash';
-
-const expressWs = require('express-ws')(app);
+import expressWs from 'express-ws';
+expressWs(dummyApp);
+const { app, getWss, applyTo } = expressWs(express());
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
-
-var aWss = expressWs.getWss('/');
 
 // Render the default page when browsing the root
 app.get('/', function(req, res){
@@ -28,6 +29,7 @@ app.get('/', function(req, res){
 app.get('/pipelines', function(req, res){
     res.json(getPipelines());
 });
+
 
 // Receive lines from the web ui
 app.post('/send', function(req, res){
@@ -40,21 +42,18 @@ app.post('/send', function(req, res){
 // Monitor the logstash container
 app.get('/logstashStatus', async function(req, res){
 
-    console.log('got a request');
-    let responseJson = {
+    let responseJson: ILogstashStatus = {
         logstashAPI: false,
-        pipelines: []
+        pipelines: [],
     }
 
     try {
-        let logstashResult = await request.get('http://logstash:9600/_node/pipelines')
+        let logstashResult = await request.get(`http://${LOGSTASH}:9600/_node/pipelines`)
+        const logstashResponse = logstashResult.body as ILogstashAPIResponse;
+        responseJson.pipelines = Object.keys(logstashResponse.pipelines)
         responseJson.logstashAPI = true;
-        if(logstashResult.body && logstashResult.body.pipelines){
-            responseJson.pipelines = Object.keys(logstashResult.body.pipelines)
-        }
-    } catch(e) {}
+    } catch(e) {console.log(e)}
 
-    console.log('sending response');
     res.json(responseJson);
 
 });
@@ -62,15 +61,15 @@ app.get('/logstashStatus', async function(req, res){
 // Receive data from logstash and echo it over websocket to all connected clients
 app.post('/log', function(req, res){
     let body = req.body;
-    aWss.clients.forEach(function (client) {
+    getWss().clients.forEach(function (client) {
         client.send(JSON.stringify(body, null, 4));
     });
     res.status(200).end();
 });
 
 // Send data to a logstash pipeline using TCP
-function sendTCP(payload, port){
-    var conn = net.createConnection({host: logstashInstance, port: port}, function() {
+function sendTCP(payload: string, port: number){
+    const conn = net.createConnection({host: LOGSTASH, port: port}, function() {
         conn.write(payload);
     })
     .on('error', function(err) {
@@ -79,14 +78,11 @@ function sendTCP(payload, port){
 }
 
 // Send data to a logstash pipeline using UDP
-function sendUDP(payload, port) {
+function sendUDP(payload: string, port: number) {
+    const message = new Buffer(payload);
 
-    console.log(`Sending the following payload over UDP:\n${payload}`);
-
-    var message = new Buffer(payload);
-
-    var client = dgram.createSocket('udp4');
-    client.send(message, 0, message.length, port, logstashInstance, function(err, bytes) {
+    const client = dgram.createSocket('udp4');
+    client.send(message, 0, message.length, port, LOGSTASH, function(err, bytes) {
         if (err) throw err;
         client.close();
     });

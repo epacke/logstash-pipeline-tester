@@ -4,7 +4,10 @@
   "description": "Testing logstash pipelines",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./build/index.js",
+    "dev": "cross-env NODE_ENV=DEV node ./build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -14,13 +17,19 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
-    "buffer": "^5.4.3",
+    "buffer": "^5.7.1",
     "cors": "^2.8.5",
     "dgram": "^1.0.1",
     "express": "^4.17.1",
     "express-ws": "^4.0.0",
     "http": "0.0.0",
-    "nodemon": "^2.0.2",
-    "superagent": "^5.2.2"
+    "nodemon": "^2.0.6",
+    "superagent": "^5.3.1",
+    "typescript": "^4.1.3"
+  },
+  "devDependencies": {
+    "@types/express-ws": "^3.0.0",
+    "@types/node": "^14.14.13",
+    "@types/superagent": "^4.1.10"
   }
 }
