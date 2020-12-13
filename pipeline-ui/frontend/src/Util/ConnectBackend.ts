@@ -3,7 +3,7 @@ const BackendConnection = async (setBackendConnected: (status: boolean) => void 
 
   let ws: WebSocket;
   try {
-    ws = await new WebSocket('ws://localhost:8080/getLogs');
+    ws = await new WebSocket('ws://localhost:8080/api/v1/getLogstashOutput');
   } catch (err) {
     console.error("Unable to connect to the backend")
     throw "Unable to connec to the backend";

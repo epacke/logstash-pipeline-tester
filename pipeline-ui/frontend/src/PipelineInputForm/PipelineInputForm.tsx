@@ -52,7 +52,7 @@ const PipelineInputForm = (props: IPipelineInputForm) => {
 
 function submitLogLines(logLines: string, port: string, protocol: string){
   fetch(
-    `${BACKEND}/send`, {
+    `${BACKEND}/api/v1/sendLogLines`, {
       "method": 'POST',
       "headers": {
         "Content-Type": 'application/json'

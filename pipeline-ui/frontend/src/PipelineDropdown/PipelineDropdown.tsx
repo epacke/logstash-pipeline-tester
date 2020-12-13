@@ -42,7 +42,7 @@ const PipelineDropdown = (props: IPipelineProps) => {
 
 
 async function preparePipelines() {
-  let res = await fetch(`${Backend}/pipelines`);
+  let res = await fetch(`${Backend}/api/v1/pipelines`);
   let pipelines: IPipeline[] = await res.json();
 
   return pipelines;

@@ -30,7 +30,7 @@ const getLogstashState = async (setLogStashConnected: (status: boolean) => void)
 
   console.log(Backend)
   try {
-    let res = await fetch(`${Backend}/logstashStatus`)
+    let res = await fetch(`${Backend}/api/v1/logstashStatus`)
     let logstashStatus = await res.json();
 
     if(!logstashStatus.logstashAPI){
