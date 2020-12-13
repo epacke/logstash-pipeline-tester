@@ -52,7 +52,7 @@ app.get('/logstashStatus', async function(req, res){
         const logstashResponse = logstashResult.body as ILogstashAPIResponse;
         responseJson.pipelines = Object.keys(logstashResponse.pipelines)
         responseJson.logstashAPI = true;
-    } catch(e) {console.log(e)}
+    } catch(e) {}
 
     res.json(responseJson);
 
