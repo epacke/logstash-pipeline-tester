@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const net = require('net');
 const dgram = require('dgram');
 const request = require('superagent');
+const cors = require('cors');
 const getPipelines = require('./getpipelines');
 
 const app = express();
@@ -12,6 +13,7 @@ const logstashInstance = 'logstash';
 
 const expressWs = require('express-ws')(app);
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
@@ -38,6 +40,7 @@ app.post('/send', function(req, res){
 // Monitor the logstash container
 app.get('/logstashStatus', async function(req, res){
 
+    console.log('got a request');
     let responseJson = {
         logstashAPI: false,
         pipelines: []
@@ -51,6 +54,7 @@ app.get('/logstashStatus', async function(req, res){
         }
     } catch(e) {}
 
+    console.log('sending response');
     res.json(responseJson);
 
 });
@@ -65,7 +69,7 @@ app.post('/log', function(req, res){
 });
 
 // Send data to a logstash pipeline using TCP
-function sendTCP(payload, port){    
+function sendTCP(payload, port){
     var conn = net.createConnection({host: logstashInstance, port: port}, function() {
         conn.write(payload);
     })
