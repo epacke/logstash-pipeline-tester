@@ -10,6 +10,9 @@ services:
   logstash:
     build: "./logstash"
     container_name: "logstash"
+    ports:
+      - "9600:9600"
+      - "5060:5060"
     volumes:
       - "./logstash/logstash-config/logstash.yml:/usr/share/logstash/config/logstash.yml"
       - "./logstash/logstash-config/pipelines.yml:/usr/share/logstash/config/pipelines.yml"
