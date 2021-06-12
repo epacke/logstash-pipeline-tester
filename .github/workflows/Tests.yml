@@ -3,7 +3,7 @@ name: Test build and linting
 on: [pull_request]
 
 jobs:
-  lint-and-build-backend:
+  lint-backend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,10 +16,7 @@ jobs:
       - name: Lint
         working-directory: ./pipeline-ui/backend
         run: npm run lint
-      - name: Build
-        working-directory: ./pipeline-ui/backend
-        run: npm run build
-  lint-and-build-frontend:
+  lint-frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,12 +29,8 @@ jobs:
       - name: Lint
         working-directory: ./pipeline-ui/frontend
         run: npm run lint
-      - name: Build
-        working-directory: ./pipeline-ui/frontend
-        run: npm run build
   integration-tests:
     timeout-minutes: 15
-    needs: [lint-and-build-frontend, lint-and-build-backend]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
