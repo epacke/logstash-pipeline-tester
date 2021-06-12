@@ -6,22 +6,20 @@ import {ILogstashAPIResponse, ILogstashStatus} from '../../../interfaces';
 import request from 'superagent';
 import {LOGSTASH} from '../../../util/LogstashAddress';
 
-router.get('/', async function(req, res){
-
-  let responseJson: ILogstashStatus = {
+router.get('/', async function(req, res) {
+  const responseJson: ILogstashStatus = {
     logstashAPI: false,
     pipelines: [],
-  }
+  };
 
   try {
-    let logstashResult = await request.get(`http://${LOGSTASH}:9600/_node/pipelines`)
+    const logstashResult = await request.get(`http://${LOGSTASH}:9600/_node/pipelines`);
     const logstashResponse = logstashResult.body as ILogstashAPIResponse;
-    responseJson.pipelines = Object.keys(logstashResponse.pipelines)
+    responseJson.pipelines = Object.keys(logstashResponse.pipelines);
     responseJson.logstashAPI = true;
-  } catch(e) {}
+  } catch (e) {}
 
   res.json(responseJson);
-
 });
 
 export default router;

@@ -3,8 +3,8 @@ import getPipelines from './getpipelines';
 
 const router = express.Router();
 
-router.get('/', function(req, res){
-    res.json(getPipelines());
+router.get('/', function(req, res) {
+  res.json(getPipelines());
 });
 
 export default router;

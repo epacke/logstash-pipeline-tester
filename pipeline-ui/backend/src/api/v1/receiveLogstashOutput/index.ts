@@ -1,11 +1,12 @@
 import express from 'express';
-import { getWss } from '../../../index';
+import {getWss} from '../../../index';
 
 const router = express.Router();
-// Receive data from logstash and echo it over websocket to all connected clients
-router.post('/', function(req, res){
-  let body = req.body;
-  getWss().clients.forEach(function (client) {
+// Receive data from logstash and echo
+// it over websocket to all connected clients
+router.post('/', function(req, res) {
+  const body = req.body;
+  getWss().clients.forEach(function(client) {
     client.send(JSON.stringify(body, null, 4));
   });
   res.status(200).end();

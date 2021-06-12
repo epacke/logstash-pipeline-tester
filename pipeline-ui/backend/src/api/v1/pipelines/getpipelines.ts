@@ -8,51 +8,53 @@ export interface IPipeline {
 }
 
 // Return file names from directory
-function fromDir (startPath: string, filter: string){
+function fromDir(startPath: string, filter: string) {
+  let foundFiles: string[] = [];
 
-    let foundFiles: string[] = [];
+  if (!fs.existsSync(startPath)) {
+    console.log('Directory did not exist', startPath);
+    return [];
+  }
 
-    if (!fs.existsSync(startPath)){
-        console.log('Directory did not exist',startPath);
-        return [];
-    }
-
-    let files=fs.readdirSync(startPath);
-    for(let i=0; i<files.length; i++){
-        let filename = path.join(startPath, files[i]);
-        let stat = fs.lstatSync(filename);
-        if (stat.isDirectory()){
-            foundFiles = [...foundFiles, ...fromDir(filename, filter)];
-        } else if (filename.indexOf(filter)>=0) {
-            foundFiles.push(filename);
-        };
+  const files=fs.readdirSync(startPath);
+  for (let i=0; i<files.length; i++) {
+    const filename = path.join(startPath, files[i]);
+    const stat = fs.lstatSync(filename);
+    if (stat.isDirectory()) {
+      foundFiles = [...foundFiles, ...fromDir(filename, filter)];
+    } else if (filename.indexOf(filter)>=0) {
+      foundFiles.push(filename);
     };
+  };
 
-    return foundFiles;
+  return foundFiles;
 };
 
 
 // Get pipeline configs from the pipeline directory
 const getConfigFiles = () => {
+  const configFiles = (fromDir('/usr/src/pipeline', '.conf'));
 
-  let configFiles = (fromDir('/usr/src/pipeline','.conf'));
+  const pipeLines = [];
+  for (const configFilePath of configFiles) {
+    const pipeline: Partial<IPipeline> = {};
 
-  let pipeLines = []
-  for(let configFilePath of configFiles){
+    pipeline.name = path.dirname(configFilePath)
+        .split(path.sep).pop() || 'unknown';
 
-    let pipeline: Partial<IPipeline> = {};
+    const configFile = fs.readFileSync(configFilePath, 'utf8');
 
-    pipeline.name = path.dirname(configFilePath).split(path.sep).pop() || 'unknown';
+    const tcpMatch = configFile
+        .match(/input {.+?tcp[^[0-9]+(?<tcpPort>[0-9]+)/ms) ||
+        {groups: {tcpPort: undefined}};
+    const tcpPort = tcpMatch.groups?.tcpPort;
 
-    let configFile = fs.readFileSync(configFilePath, 'utf8');
+    const udpMatch = configFile
+        .match(/input {.+?udp[^[0-9]+(?<udpPort>[0-9]+)/ms) ||
+        {groups: {udpPort: undefined}};
+    const udpPort = udpMatch.groups?.udpPort;
 
-    const tcpMatch = configFile.match(/input {.+?tcp[^[0-9]+(?<tcpPort>[0-9]+)/ms) || { groups: { tcpPort: undefined } };
-    const tcpPort = tcpMatch.groups?.tcpPort
-
-    const udpMatch = configFile.match(/input {.+?udp[^[0-9]+(?<udpPort>[0-9]+)/ms) || { groups: { udpPort: undefined } };
-    const udpPort = udpMatch.groups?.udpPort
-
-    if (tcpPort){
+    if (tcpPort) {
       pipeline.protocol = 'TCP';
       pipeline.port = tcpPort;
       pipeLines.push(pipeline);
@@ -64,6 +66,6 @@ const getConfigFiles = () => {
   }
 
   return pipeLines;
-}
+};
 
 export default getConfigFiles;

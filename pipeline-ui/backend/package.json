@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ./build/index.js",
     "dev": "cross-env NODE_ENV=DEV node ./build/index.js",
+    "lint": "eslint ./src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },
@@ -29,7 +30,11 @@
   },
   "devDependencies": {
     "@types/express-ws": "^3.0.0",
-    "@types/node": "^14.14.13",
-    "@types/superagent": "^4.1.10"
+    "@types/node": "^14.17.3",
+    "@types/superagent": "^4.1.11",
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
+    "@typescript-eslint/parser": "^4.26.1",
+    "eslint": "^7.28.0",
+    "eslint-config-google": "^0.14.0"
   }
 }

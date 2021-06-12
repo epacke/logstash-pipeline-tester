@@ -12,15 +12,15 @@ const port = 8080;
 
 import expressWs from 'express-ws';
 expressWs(dummyApp);
-const { app, getWss } = expressWs(express());
+const {app, getWss} = expressWs(express());
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Render the default page when browsing the root
-app.get('/', function(req, res){
-    res.sendfile('index.html', { root: __dirname + "/public/index.html" } );
+app.get('/', function(req, res) {
+  res.sendfile('index.html', {root: __dirname + '/public/index.html'} );
 });
 
 app.ws('/api/v1/getLogstashOutput', (ws, req) => {});
@@ -29,6 +29,7 @@ app.use('/api/v1/sendLogLines', apiV1SendLogLines);
 app.use('/api/v1/receiveLogstashOutput', apiV1ReceiveLogstashOutput);
 app.use('/api/v1/logstashStatus', apiV1LogstashStatus);
 
-app.listen(port, () => console.log(`Logstash config tester running on port ${port}!`))
+app.listen(port,
+    () => console.log(`Logstash config tester running on port ${port}!`));
 
-export { getWss };
+export {getWss};
