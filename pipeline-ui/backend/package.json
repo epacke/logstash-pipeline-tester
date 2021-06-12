@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./build/index.js",
     "dev": "cross-env NODE_ENV=DEV node ./build/index.js",
-    "lint": "eslint ./src/**/*",
+    "lint": "eslint ./src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
   },
