@@ -35,3 +35,24 @@ jobs:
       - name: Build
         working-directory: ./pipeline-ui/frontend
         run: npm run build
+
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down
+  integration-tests:
+    timeout-minutes: 15
+    needs: [lint-and-build-frontend, lint-and-build-backend]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Start containers
+        run: docker-compose -f "docker-compose.yml" up -d --build
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          working-directory: pipeline-ui/integration-tests
+          wait-on: 'http://localhost:8080'
+          start: npm start
+      - name: Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.yml" down

@@ -13,7 +13,7 @@ const BackendState = (props: IBackendState) => {
 
   return (
     <button
-      id="logstash-status"
+      id="backend-status"
       className={`btn btn-xs btn-${backendClass} m-1 mt-3 py-1`}
     >
       {backendText}
