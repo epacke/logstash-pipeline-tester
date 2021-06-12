@@ -27,12 +27,13 @@ context('Waiting', () => {
     })
 
     it('Should get a json reply when sending valid json to generic-json', () => {
+      cy.get('button#logstash-status.btn-success', {timeout: 60000});
       cy.get('select#pipeline-select').select('generic-json');
       cy.get('input#send-port').should('have.value', '5060');
       cy.get('select#send-protocol').should('have.value', 'TCP');
       cy.get('textarea#send-string').type('\{"test": 123\}', {parseSpecialCharSequences: false});
       cy.get('button#send-button').click();
-      cy.get('div#json-pretty pre').should('contain.text', '"test": 123');
+      cy.get('div#json-pretty pre', {timeout: 60000}).should('contain.text', '"test": 123', );
     })
 
   })
