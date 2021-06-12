@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import Backend from '../Util/Backend';
+import React from 'react';
 
 interface IBackendState {
   backendConnected: boolean,
 }
 
 const BackendState = (props: IBackendState) => {
+  const {backendConnected} = props;
 
-  const { backendConnected } = props;
-
-  const backendText = backendConnected ? 'Backend connected' : 'Backend not connected';
+  const backendText = backendConnected ?
+      'Backend connected' : 'Backend not connected';
   const backendClass = backendConnected ? 'success' : 'danger';
 
   return (
@@ -19,7 +18,7 @@ const BackendState = (props: IBackendState) => {
     >
       {backendText}
     </button>
-  )
-}
+  );
+};
 
 export default BackendState;

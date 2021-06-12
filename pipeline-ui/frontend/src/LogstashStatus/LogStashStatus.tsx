@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import Backend from '../Util/Backend';
 
 const LogStashState = () => {
-
-  const [ logstashConnected, setlogstashConnected] = useState<boolean>(false);
-  const logstashText = logstashConnected ? 'Logstash connected' : 'Logstash not connected';
-  const logstashClass = logstashConnected ? 'success' : 'danger';
+  const [logstashConnected, setlogstashConnected] = useState<boolean>(false);
+  const logstashText = logstashConnected ?
+      'Logstash connected' : 'Logstash not connected';
+  const logstashClass = logstashConnected ?
+      'success' : 'danger';
 
   useEffect(() => {
     const logstashStateInterval = setInterval(() => {
-       getLogstashState(setlogstashConnected);
+      getLogstashState(setlogstashConnected);
     }, 2000);
     return () => {
-      clearInterval(logstashStateInterval)
-    }
-  },[])
+      clearInterval(logstashStateInterval);
+    };
+  }, []);
 
   return (
     <button
@@ -23,24 +24,24 @@ const LogStashState = () => {
     >
       {logstashText}
     </button>
-  )
-}
+  );
+};
 
-const getLogstashState = async (setLogStashConnected: (status: boolean) => void) => {
-
-  console.log(Backend)
+const getLogstashState = async (setLogStashConnected: (status: boolean)
+    => void) => {
+  console.log(Backend);
   try {
-    let res = await fetch(`${Backend}/api/v1/logstashStatus`)
-    let logstashStatus = await res.json();
+    const res = await fetch(`${Backend}/api/v1/logstashStatus`);
+    const logstashStatus = await res.json();
 
-    if(!logstashStatus.logstashAPI){
+    if (!logstashStatus.logstashAPI) {
       setLogStashConnected(false);
     } else {
       setLogStashConnected(true);
     }
-  } catch(e){
+  } catch (e) {
     console.log('No response from backend');
   }
-}
+};
 
 export default LogStashState;

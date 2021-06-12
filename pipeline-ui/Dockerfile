@@ -1,4 +1,4 @@
-FROM node:12 as compile-image
+FROM node:14 as compile-image
 
 # npm install frontend
 COPY ./frontend/package.json /home/node/app/frontend/package.json

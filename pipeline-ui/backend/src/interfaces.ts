@@ -1,10 +1,10 @@
 export interface ILogstashAPIPipeline {
   workers: number,
-  batch_size: number,
-  batch_delay: number,
-  config_reload_automatic: boolean,
-  config_reload_interval: number,
-  dead_letter_queue_enabled: boolean,
+  batchSize: number,
+  batchDelay: number,
+  configReloadAutomatic: boolean,
+  configReloadInterval: number,
+  deadLetterQueueEnabled: boolean,
 }
 
 export interface Pipelines {[key:string]: ILogstashAPIPipeline }
@@ -12,7 +12,7 @@ export interface Pipelines {[key:string]: ILogstashAPIPipeline }
 export interface ILogstashAPIResponse {
   host: string,
   version: string,
-  http_address: string,
+  httpAddress: string,
   id: string,
   name: string,
   pipelines: Pipelines,

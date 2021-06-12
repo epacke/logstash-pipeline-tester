@@ -1,0 +1,35 @@
+name: Test build and linting
+
+on: [pull_request]
+
+jobs:
+  lint-and-build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: npm install
+        run: npm install ci
+      - name: Lint
+        working-directory: ./pipeline-ui/backend
+        run: npm run lint
+      - name: Build
+        working-directory: ./pipeline-ui/backend
+        run: npm run build
+  lint-and-build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: npm install
+        run: npm install ci
+      - name: Lint
+        working-directory: ./pipeline-ui/frontend
+        run: npm run lint
+      - name: Build
+        working-directory: ./pipeline-ui/frontend
+        run: npm run build
