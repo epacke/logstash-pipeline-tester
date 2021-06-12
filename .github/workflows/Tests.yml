@@ -35,10 +35,6 @@ jobs:
       - name: Build
         working-directory: ./pipeline-ui/frontend
         run: npm run build
-
-      - name: Stop containers
-        if: always()
-        run: docker-compose -f "docker-compose.yml" down
   integration-tests:
     timeout-minutes: 15
     needs: [lint-and-build-frontend, lint-and-build-backend]
