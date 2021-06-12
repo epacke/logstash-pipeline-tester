@@ -11,6 +11,7 @@ jobs:
         with:
           node-version: '14'
       - name: npm install
+        working-directory: ./pipeline-ui/backend
         run: npm install
       - name: Lint
         working-directory: ./pipeline-ui/backend
@@ -26,6 +27,7 @@ jobs:
         with:
           node-version: '14'
       - name: npm install
+        working-directory: ./pipeline-ui/frontend
         run: npm install
       - name: Lint
         working-directory: ./pipeline-ui/frontend
