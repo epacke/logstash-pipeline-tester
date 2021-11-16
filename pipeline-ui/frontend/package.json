@@ -13,7 +13,6 @@
     "react": "^16.13.1",
     "react-bootstrap": "^1.3.0",
     "react-json-pretty": "^2.2.0",
-    "react-scripts": "^4.0.3",
     "typescript": "~3.7.2"
   },
   "scripts": {
@@ -47,6 +46,7 @@
     "eslint": "^7.28.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.24.0",
-    "react-dom": "^16.14.0"
+    "react-dom": "^16.14.0",
+    "react-scripts": "^4.0.3"
   }
 }
