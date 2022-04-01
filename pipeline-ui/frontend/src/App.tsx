@@ -13,7 +13,7 @@ function App() {
   const [backendConnected, setBackendConnected] = useState<boolean>(false);
   const [logStashResult, setLogstashResult] = useState<string[]>([]);
   const [pipeline, setPipeline] = useState<IPipeline>(
-      {port: '', protocol: '', name: ''});
+    {port: '', protocol: '', name: ''});
 
   const handleLogStashResult = (message: string) => {
     setLogstashResult((prevState) => {

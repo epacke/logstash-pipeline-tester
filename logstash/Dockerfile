@@ -1,13 +1,11 @@
-FROM logstash:7.13.1
+FROM logstash:8.1.1
 
 USER root
 
-RUN yum update -y
-RUN yum -y --enablerepo=extras install epel-release
-RUN yum install -y \
-    python-pip \
-    supervisor \
-    && yum clean all
+RUN apt update
+RUN apt install -y \
+    python3-pip \
+    supervisor
 
 COPY ./supervisor-config/supervisord.conf /etc/
 

@@ -22,6 +22,7 @@ module.exports = {
   'rules': {
     'require-jsdoc': 0,
     'new-cap': 0,
+    'indent': ['error', 2],
   },
   'ignorePatterns': ['src/serviceWorker.ts'],
 };

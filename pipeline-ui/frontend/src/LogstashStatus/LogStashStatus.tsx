@@ -4,9 +4,9 @@ import Backend from '../Util/Backend';
 const LogStashState = () => {
   const [logstashConnected, setlogstashConnected] = useState<boolean>(false);
   const logstashText = logstashConnected ?
-      'Logstash connected' : 'Logstash not connected';
+    'Logstash connected' : 'Logstash not connected';
   const logstashClass = logstashConnected ?
-      'success' : 'danger';
+    'success' : 'danger';
 
   useEffect(() => {
     const logstashStateInterval = setInterval(() => {

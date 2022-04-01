@@ -23,9 +23,9 @@ const PipelineDropdown = (props: IPipelineProps) => {
     const index = pipelineSelect.current?.selectedIndex || 0;
     const name = pipelineSelect.current?.options[index].value || '';
     const port = pipelineSelect.current?.options[index]
-        .getAttribute('data-port') || '';
+      .getAttribute('data-port') || '';
     const protocol = pipelineSelect.current?.options[index]
-        .getAttribute('data-protocol') || '';
+      .getAttribute('data-protocol') || '';
     setPipeline({name, protocol, port});
   };
 

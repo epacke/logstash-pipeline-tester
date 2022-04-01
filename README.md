@@ -18,3 +18,6 @@ I have very limited time so I won't be able to act fast on any issue but it's al
 
 # Screenshots
 <p align="center"><img src="media/screenshot.png"/></p>
+
+# Credits
+* F5 Example pipeline copied (and slightly modified) from [here](https://github.com/OutsideIT/logstash_filter_f5)
