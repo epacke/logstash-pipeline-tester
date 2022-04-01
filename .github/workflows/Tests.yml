@@ -49,6 +49,8 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
+      - name: Start Logstash
+        run: docker-compose -f "docker-compose.yml" up -d --build logstash
       - uses: actions/checkout@v2
       - name: npm install
         working-directory: logstash/tests
