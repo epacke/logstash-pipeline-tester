@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Start Logstash
-        run: docker-compose -f "docker-compose.yml" up -d --build logstash
+        run: docker-compose -f "docker-compose.yml" up -d --build
       - name: npm install
         working-directory: logstash/tests
         run: npm install
