@@ -2,7 +2,6 @@ FROM logstash:7.13.1
 
 USER root
 
-RUN yum update -y
 RUN yum -y --enablerepo=extras install epel-release
 RUN yum install -y \
     python-pip \
