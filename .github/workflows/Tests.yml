@@ -54,4 +54,5 @@ jobs:
         working-directory: logstash/tests
         run: npm install
       - name: Run tests
+        working-directory: logstash/tests
         run: npm run test
