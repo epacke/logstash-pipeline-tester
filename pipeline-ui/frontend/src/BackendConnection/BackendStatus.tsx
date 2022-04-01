@@ -8,7 +8,7 @@ const BackendState = (props: IBackendState) => {
   const {backendConnected} = props;
 
   const backendText = backendConnected ?
-      'Backend connected' : 'Backend not connected';
+    'Backend connected' : 'Backend not connected';
   const backendClass = backendConnected ? 'success' : 'danger';
 
   return (

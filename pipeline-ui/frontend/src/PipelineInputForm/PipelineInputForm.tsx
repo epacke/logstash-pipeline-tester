@@ -1,6 +1,7 @@
 import React, {useState, useRef} from 'react';
 import {IPipeline} from '../Interfaces/CommonInterfaces';
-import BACKEND from '../Util/Backend';
+import {SubmitLogLines} from './SubmitLogLines';
+
 
 interface IPipelineInputForm {
   pipeline: IPipeline,
@@ -28,7 +29,7 @@ const PipelineInputForm = (props: IPipelineInputForm) => {
   const handleSubmit = async () => {
     setLogstashResult([]);
     const {port, protocol} = pipeline;
-    submitLogLines(logLines, port, protocol);
+    SubmitLogLines(logLines, port, protocol);
   };
 
   return (
@@ -51,18 +52,5 @@ const PipelineInputForm = (props: IPipelineInputForm) => {
   );
 };
 
-function submitLogLines(logLines: string, port: string, protocol: string) {
-  fetch(
-      `${BACKEND}/api/v1/sendLogLines`, {
-        'method': 'POST',
-        'headers': {
-          'Content-Type': 'application/json',
-        },
-        'body': JSON.stringify(
-            {sendString: logLines, port: port, protocol: protocol},
-        ),
-      },
-  );
-}
 
 export default PipelineInputForm;

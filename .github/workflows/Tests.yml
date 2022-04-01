@@ -45,3 +45,13 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker-compose -f "docker-compose.yml" down
+  logstash-tests:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: npm install
+        working-directory: logstash/tests
+        run: npm install
+      - name: Run tests
+        run: npm run test
