@@ -10,10 +10,14 @@ services:
   logstash:
     build: "./logstash"
     container_name: "logstash"
+    hostname: "logstash"
     ports:
+      - "5245:5245"
       - "9600:9600"
       - "5060:5060"
     volumes:
       - "./logstash/logstash-config/logstash.yml:/usr/share/logstash/config/logstash.yml"
       - "./logstash/logstash-config/pipelines.yml:/usr/share/logstash/config/pipelines.yml"
       - "./logstash/logstash-config/pipeline:/usr/share/logstash/pipeline"
+      - "./logstash/logstash-config/dictionaries:/usr/share/logstash/dictionaries"
+      - "./logstash/logstash-config/patterns:/usr/share/logstash/patterns"

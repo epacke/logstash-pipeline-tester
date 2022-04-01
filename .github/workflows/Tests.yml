@@ -29,7 +29,7 @@ jobs:
       - name: Lint
         working-directory: ./pipeline-ui/frontend
         run: npm run lint
-  integration-tests:
+  integration-and-unit-tests:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     steps:
@@ -42,6 +42,12 @@ jobs:
           working-directory: pipeline-ui/integration-tests
           wait-on: 'http://localhost:8080'
           start: npm start
+      - name: npm install
+        working-directory: logstash/tests
+        run: npm install
+      - name: Run tests
+        working-directory: logstash/tests
+        run: npm run test
       - name: Stop containers
         if: always()
         run: docker-compose -f "docker-compose.yml" down
