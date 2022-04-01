@@ -52,6 +52,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Start Logstash
         run: docker-compose -f "docker-compose.yml" up -d --build
+      - name: Wait for backend to start
+        timeout-minutes: 2
+        run: while ! nc -z localhost 9600; do sleep 0.1 done
+      - name: Wait for logstash to start
+        timeout-minutes: 2
+        run: while ! nc -z localhost 8080; do sleep 0.1 done
       - name: npm install
         working-directory: logstash/tests
         run: npm install
