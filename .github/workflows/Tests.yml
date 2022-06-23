@@ -39,6 +39,9 @@ jobs:
           node-version: '16'
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d --build
+      - name: npm install
+        working-directory: ./pipeline-ui/integration-tests
+        run: npm install
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
