@@ -1,3 +1,4 @@
 node_modules
 .idea
 **/build
+pipeline-ui/integration-tests/cypress/videos
