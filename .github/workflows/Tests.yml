@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
       - name: npm install
         working-directory: ./pipeline-ui/backend
         run: npm install
@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16'
       - name: npm install
         working-directory: ./pipeline-ui/frontend
         run: npm install
@@ -34,8 +34,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Start containers
         run: docker-compose -f "docker-compose.yml" up -d --build
+      - name: npm install
+        working-directory: ./pipeline-ui/integration-tests
+        run: npm install
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
