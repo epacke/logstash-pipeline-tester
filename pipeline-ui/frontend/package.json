@@ -13,7 +13,7 @@
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.6",
     "react-json-pretty": "^2.2.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.9.10"
   },
   "scripts": {
     "start": "cross-env NODE_ENV=production react-scripts start",
