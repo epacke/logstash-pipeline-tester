@@ -42,7 +42,7 @@ function App() {
                 <th>Raw Log lines</th>
                 <th>Port</th>
                 <th>Protocol</th>
-                <th>&nbsp</th>
+                <th>&nbsp;</th>
               </tr>
             </thead>
             <tbody>
