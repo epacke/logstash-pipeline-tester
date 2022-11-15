@@ -34,7 +34,7 @@ const PipelineInputForm = (props: IPipelineInputForm) => {
 
   return (
     <tr>
-      <td><textarea ref={logLinesTextArea}
+      <td><textarea style={{height: '100px'}} ref={logLinesTextArea}
         onChange={handleLogLinesChange} id="send-string"/></td>
       <td><input id="send-port" defaultValue={pipeline.port}
         onChange={handlePortChange}/></td>

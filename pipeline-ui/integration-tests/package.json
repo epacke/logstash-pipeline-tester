@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "cypress run",
+    "start:dev": "cypress run --headed --no-exit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
