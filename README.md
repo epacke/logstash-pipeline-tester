@@ -1,9 +1,13 @@
 # About
-This started out as a way to make it easy to test the logstash configuration for people without much linux know-how. Then it kind of grew into an interface, and then here we are.
-It's written fast and the code could use a bit of additional love, but it should work fine.
+This started out as a way to make it easy to test the logstash configuration for people without much linux know-how (and from my own frustration with how hard it was). Then it kind of grew into an interface, and here we are.
+
+It's written fast and the code could use a bit of additional love, but it works fine.
 
 ## How to start
-Documentation on how to get going is available here: https://loadbalancing.se/2020/03/11/logstash-pipeline-tester/
+Documentation on how to get going is available here:
+https://loadbalancing.se/2020/03/11/logstash-pipeline-tester/
+
+Article is dated 2020 but is continously updated whenever there is need to do so.
 
 ## Contributions
 I gladly accept pull requests.
