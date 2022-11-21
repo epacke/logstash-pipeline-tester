@@ -23,6 +23,7 @@ module.exports = {
     'require-jsdoc': 0,
     'new-cap': 0,
     'indent': ['error', 2],
+    'padded-blocks': 0,
   },
   'ignorePatterns': ['src/serviceWorker.ts'],
 };

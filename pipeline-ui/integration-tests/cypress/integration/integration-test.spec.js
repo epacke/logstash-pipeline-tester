@@ -13,27 +13,31 @@ context('Waiting', () => {
     })
 
     it('Should connect to backend', () => {
-      cy.get('button#backend-status.btn-success');
+      cy.get('[data-cy=backend-status-badge] span.MuiBadge-badge svg', {timeout: 4000})
+          .should('have.class', 'MuiSvgIcon-colorSuccess');
     })
 
     it('Should connect to logstash', () => {
-      cy.get('button#logstash-status.btn-success', {timeout: 60000});
+      cy.get('[data-cy=logstash-status-badge] span.MuiBadge-badge svg', {timeout: 4000})
+          .should('have.class', 'MuiSvgIcon-colorSuccess');
     })
 
     it('Should pre-select port and protocol automatically', () => {
-      cy.get('select#pipeline-select').select('generic-json');
-      cy.get('input#send-port').should('have.value', '5060');
-      cy.get('select#send-protocol').should('have.value', 'TCP');
+      cy.get('[data-cy="pipeline-select"]').click();
+      cy.get('[data-cy="pipeline-menu-item-generic-json"').click();
+      cy.get('[data-cy="send-port"] input').should('have.value', '5060');
+      //cy.get('[data-cy="send-protocol"]').should('have.value', 'TCP');
     })
 
     it('Should get a json reply when sending valid json to generic-json', () => {
-      cy.get('button#logstash-status.btn-success', {timeout: 60000});
-      cy.get('select#pipeline-select').select('generic-json');
-      cy.get('input#send-port').should('have.value', '5060');
-      cy.get('select#send-protocol').should('have.value', 'TCP');
-      cy.get('textarea#send-string').type('\{"test": 123\}', {parseSpecialCharSequences: false});
-      cy.get('button#send-button').click();
-      cy.get('div#json-pretty pre', {timeout: 60000}).should('contain.text', '"test": 123', );
+      cy.get('[data-cy="pipeline-select"]').click();
+      cy.get('[data-cy="pipeline-menu-item-generic-json"').click();
+      cy.get('[data-cy="raw-logs-input"] textarea').first()
+          .type('{"test": 123}', {parseSpecialCharSequences: false});
+      cy.get('[data-cy="send-raw-logs"]').click();
+      cy.get(
+          '[data-cy="logstash-result"] pre', {timeout: 60000})
+          .should('contain.text', '"test": 123', );
     })
 
   })
