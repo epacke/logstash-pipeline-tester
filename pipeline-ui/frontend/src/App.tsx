@@ -6,28 +6,18 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import './App.css';
 import Menu from './Layout/Menu/Menu';
-import {IPipeline} from './Interfaces/CommonInterfaces';
 import {Grid, Paper} from '@mui/material';
-import LogstashInputRow from './Components/InputRow/LogstashInputRow';
 import ConnectBackend from './Util/ConnectBackend';
+import LogstashLogLines from './Components/InputTextarea/LogstashLogLines';
 
 function App() {
-  const [pipeline, setPipeline] = useState<IPipeline | null>(null);
-  const [port, setPort] = useState<string>('');
-  const [protocol, setProtocol] = useState<string>('');
+
   const [
     backendConnected, setBackendConnected,
   ] = useState<boolean | null>(null);
   const [logStashResult, setLogstashResult] = useState<string[]>([]);
+  const [rawData, setRawData] = useState<string>('');
 
-  useEffect(() => {
-    if (!pipeline) {
-      return;
-    }
-    const {port, protocol} = pipeline;
-    setPort(port);
-    setProtocol(protocol);
-  }, [pipeline]);
 
   const handleLogStashResult = (message: string) => {
     setLogstashResult((prevState) => {
@@ -43,17 +33,23 @@ function App() {
     <Grid container spacing={2} p={2}>
       <Grid item xs={12}>
         <Menu
-          setPipeline={setPipeline}
+          setLogstashResult={setLogstashResult}
+          rawData={rawData}
           backendConnected={backendConnected}
         />
       </Grid>
-      <LogstashInputRow
-        port={port}
-        setPort={setPort}
-        protocol={protocol}
-        setProtocol={setProtocol}
-        setLogstashResult={setLogstashResult}
-      />
+      <Grid item xs={12}>
+        <Paper sx={{
+          height: '100%',
+          minHeight: '100px',
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'flex',
+          padding: '1em 1em 0em 1em',
+        }}>
+          <LogstashLogLines setRawData={setRawData}/>
+        </Paper>
+      </Grid>
       <Grid item xs={12}>
         {
           logStashResult.length ?

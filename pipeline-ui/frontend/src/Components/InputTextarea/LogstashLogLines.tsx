@@ -33,6 +33,7 @@ export default function LogstashLogLines(
       multiline
       onChange={handleRawDataChange}
       data-cy='raw-logs-input'
+      maxRows={4}
     />
   );
 }

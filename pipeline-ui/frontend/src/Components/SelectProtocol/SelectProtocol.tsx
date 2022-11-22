@@ -20,6 +20,7 @@ export default function SelectProtocol(props: ISelectProtocolProps) {
   return (
     <FormControl sx={{maxWidth: '80px', marginRight: '0.5em'}}>
       <Select
+        size="small"
         value={protocol || 'TCP'}
         onChange={handleChange}
         displayEmpty

@@ -24,13 +24,14 @@ export default function InputPort(props: IInputPortProps) {
 
   return (
     <TextField
-      sx={{maxWidth: '8em', marginRight: '0.5em'}}
+      sx={{maxWidth: '9em', marginTop: '24px', marginRight: '0.5em'}}
       error={error}
+      size="small"
       id="outlined-error-helper-text"
       label="Port number"
       onInput={handleChange}
       value={port}
-      helperText={error ? 'Invalid port number': 'Input port'}
+      helperText={error ? 'Invalid port number': ' '}
       data-cy='send-port'
     />
   );

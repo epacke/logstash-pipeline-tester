@@ -123,8 +123,11 @@ const GeneralHelp = (
     </DialogTitle>
     <DialogContent>
       <DialogContentText id="alert-dialog-description">
+        It&lsquo;s pretty easy. Pick protocol, enter port and then submit
+        your log lines to the logstash backend.
+        <br/>
         If you need further assistance or guidance on how to
-        use this tool, please check eithe <Link
+        use this tool, please check either <Link
           href="https://loadbalancing.se/2020/03/11/logstash-testing-tool/">
           the manual
         </Link>
