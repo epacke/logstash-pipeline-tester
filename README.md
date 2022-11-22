@@ -26,8 +26,9 @@ I have very limited time so I won't be able to act fast on any issue but it's al
 # Credits
 * F5 Example pipeline copied (and slightly modified) from [here](https://github.com/OutsideIT/logstash_filter_f5)
 
-## Icons
+## Icons/media
 https://www.svgrepo.com/svg/289194/log-wood
+<a href="https://www.vecteezy.com/free-vector/wood-logs">Wood Logs Vectors by Vecteezy</a>
 
 ## Great tool for cleaning up SVGs
 https://iconly.io/tools/svg-cleaner

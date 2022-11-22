@@ -29,7 +29,7 @@ export default function BasicSelect(props: IPipelineProps) {
   }, []);
 
   return (
-    <FormControl size="small" sx={{minWidth: '300px', marginLeft: '50px'}}>
+    <FormControl size="small" sx={{minWidth: '250px'}}>
       <Select
         value={selectedValue}
         onChange={handleChange}
