@@ -1,9 +1,10 @@
+import {webSocketsBackend} from './Backend';
 
 const BackendConnection = async (setBackendConnected: (status: boolean) => void,
   handleLogStashResult: (messages: string) => void) => {
   let ws: WebSocket;
   try {
-    ws = await new WebSocket(((window.location.protocol === 'https:') ? 'wss://' : 'ws://') + window.location.host + '/api/v1/getLogstashOutput');
+    ws = await new WebSocket(`${webSocketsBackend}/api/v1/getLogstashOutput`);
   } catch (err) {
     console.error('Unable to connect to the backend');
     throw new Error('Unable to connect to the backend');
@@ -23,10 +24,6 @@ const BackendConnection = async (setBackendConnected: (status: boolean) => void,
   };
 
   ws.onclose = function() {
-
-  };
-
-  ws.onclose = function() {
     setBackendConnected(false);
     const t = setInterval(async () => {
       try {
@@ -35,7 +32,7 @@ const BackendConnection = async (setBackendConnected: (status: boolean) => void,
       } catch (e) {
         console.error('Reconnect failed');
         throw new Error('Reconnect failed');
-      };
+      }
     }, 1000);
   };
 };

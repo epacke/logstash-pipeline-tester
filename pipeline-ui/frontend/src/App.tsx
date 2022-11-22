@@ -1,19 +1,33 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import JSONPretty from 'react-json-pretty';
-import './pipeline-ui.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import './App.css';
+import Menu from './Layout/Menu/Menu';
 import {IPipeline} from './Interfaces/CommonInterfaces';
-import LogStashStatus from './LogstashStatus/LogStashStatus';
-import BackendState from './BackendConnection/BackendStatus';
+import {Grid, Paper} from '@mui/material';
+import LogstashInputRow from './Components/InputRow/LogstashInputRow';
 import ConnectBackend from './Util/ConnectBackend';
-import PipelineInputForm from './PipelineInputForm/PipelineInputForm';
-import PipelineDropdown from './PipelineDropdown/PipelineDropdown';
 
 function App() {
-  const [backendConnected, setBackendConnected] = useState<boolean>(false);
+  const [pipeline, setPipeline] = useState<IPipeline | null>(null);
+  const [port, setPort] = useState<string>('');
+  const [protocol, setProtocol] = useState<string>('');
+  const [
+    backendConnected, setBackendConnected,
+  ] = useState<boolean | null>(null);
   const [logStashResult, setLogstashResult] = useState<string[]>([]);
-  const [pipeline, setPipeline] = useState<IPipeline>(
-    {port: '', protocol: '', name: ''});
+
+  useEffect(() => {
+    if (!pipeline) {
+      return;
+    }
+    const {port, protocol} = pipeline;
+    setPort(port);
+    setProtocol(protocol);
+  }, [pipeline]);
 
   const handleLogStashResult = (message: string) => {
     setLogstashResult((prevState) => {
@@ -25,52 +39,39 @@ function App() {
     ConnectBackend(setBackendConnected, handleLogStashResult);
   }, []);
 
-
   return (
-    <div className="App container-fluid">
-      <div className="row">
-        <div className="col">
-          <span className="h3 align-middle">Logstash pipeline tester</span>
-          <PipelineDropdown setPipeline={setPipeline}/>
-          <div className="float-right">
-            <BackendState backendConnected={backendConnected}/>
-            <LogStashStatus/>
-          </div>
-          <table id="send-table" className="table table-striped">
-            <thead className="thead-dark">
-              <tr>
-                <th>Raw Log lines</th>
-                <th>Port</th>
-                <th>Protocol</th>
-                <th>&nbsp;</th>
-              </tr>
-            </thead>
-            <tbody>
-              <PipelineInputForm setLogstashResult={setLogstashResult}
-                pipeline={pipeline} setPipeline={setPipeline}/>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <div className="form-group">
-            <label htmlFor="logstash-result"
-              className="label-info col-form-label-lg">
-              Logstash pipeline output
-            </label>
-            <div className="h-100 overflow-auto" id="logstash-result">
-              {logStashResult.length ? logStashResult.map((res) => {
-                return <JSONPretty key={btoa(res)}
-                  id="json-pretty" data={res}/>;
-              }) :
-                <JSONPretty key={'null'} id="json-pretty" data={'No data yet'}/>
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <Grid container spacing={2} p={2}>
+      <Grid item xs={12}>
+        <Menu
+          setPipeline={setPipeline}
+          backendConnected={backendConnected}
+        />
+      </Grid>
+      <LogstashInputRow
+        port={port}
+        setPort={setPort}
+        protocol={protocol}
+        setProtocol={setProtocol}
+        setLogstashResult={setLogstashResult}
+      />
+      <Grid item xs={12}>
+        {
+          logStashResult.length ?
+            logStashResult.map((res) => {
+              return (
+                <Paper key={btoa(res)}>
+                  <JSONPretty
+                    data-cy="logstash-result"
+                    id="json-pretty"
+                    data={res}
+                  />
+                </Paper>
+              );
+            }) :
+            ''
+        }
+      </Grid>
+    </Grid>
   );
 }
 

@@ -24,11 +24,11 @@ function fromDir(startPath: string, filter: string) {
       foundFiles = [...foundFiles, ...fromDir(filename, filter)];
     } else if (filename.indexOf(filter)>=0) {
       foundFiles.push(filename);
-    };
-  };
+    }
+  }
 
   return foundFiles;
-};
+}
 
 
 // Get pipeline configs from the pipeline directory
