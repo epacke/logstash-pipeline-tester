@@ -18,7 +18,6 @@ function App() {
   const [logStashResult, setLogstashResult] = useState<string[]>([]);
   const [rawData, setRawData] = useState<string>('');
 
-
   const handleLogStashResult = (message: string) => {
     setLogstashResult((prevState) => {
       return [...prevState, message];
