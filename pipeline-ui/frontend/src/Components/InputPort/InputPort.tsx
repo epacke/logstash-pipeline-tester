@@ -1,26 +1,29 @@
 import * as React from 'react';
-import {SyntheticEvent, useState} from 'react';
+import {SyntheticEvent, useEffect} from 'react';
 import {TextField} from '@mui/material';
+import ValidatePortInput from '../../Util/ValidatePortInput';
 
 interface IInputPortProps {
+  error: boolean,
+  setError: (state: boolean) => void,
   port: string,
   setPort: (port: string) => void,
 }
 
 export default function InputPort(props: IInputPortProps) {
 
-  const {port, setPort} = props;
-  const [error, setError] = useState(false);
+  const {port, setPort, error, setError} = props;
+
+  useEffect(() => {
+    setError(!ValidatePortInput(port) && port !== '');
+  }, [port]);
 
   const handleChange = (event: SyntheticEvent) => {
     const {value} = event.target as HTMLInputElement;
-    const validPort = /^[0-9]*$/.test(value);
+    const validPort = ValidatePortInput(value) || value === '';
     setError(!validPort);
-    if (validPort) {
-      setPort(value);
-    }
+    setPort(value);
   };
-
 
   return (
     <TextField
@@ -29,6 +32,7 @@ export default function InputPort(props: IInputPortProps) {
       size="small"
       id="outlined-error-helper-text"
       label="Port number"
+      onChange={handleChange}
       onInput={handleChange}
       value={port}
       helperText={error ? 'Invalid port number': ' '}

@@ -14,6 +14,7 @@ import SendIcon from '@mui/icons-material/Send';
 import FormControl from '@mui/material/FormControl';
 import {useEffect, useState} from 'react';
 import {Backend} from '../../Util/Backend';
+import ValidatePortInput from '../../Util/ValidatePortInput';
 
 function ResponsiveAppBar(props: {
   rawData: string,
@@ -26,6 +27,7 @@ function ResponsiveAppBar(props: {
   const [pipeline, setPipeline] = useState<IPipeline | null>(null);
   const [port, setPort] = useState<string>('');
   const [protocol, setProtocol] = useState<string>('');
+  const [portError, setPortError] = useState(false);
 
   useEffect(() => {
     if (!pipeline) {
@@ -37,6 +39,10 @@ function ResponsiveAppBar(props: {
   }, [pipeline]);
 
   const handleSubmit = () => {
+    if (!ValidatePortInput(port)) {
+      setPortError(true);
+      return;
+    }
     setLogstashResult([]);
     fetch(
       `${Backend}/api/v1/sendLogLines`, {
@@ -73,7 +79,12 @@ function ResponsiveAppBar(props: {
               <SelectProtocol protocol={protocol} setProtocol={setProtocol}/>
             </Box>
             <Box mr={2}>
-              <InputPort port={port} setPort={setPort}/>
+              <InputPort
+                error={portError}
+                setError={setPortError}
+                port={port}
+                setPort={setPort}
+              />
             </Box>
             <FormControl
               size="small"
