@@ -7,6 +7,9 @@ It's written fast and the code could use a bit of additional love, but it works 
 Documentation on how to get going is available here:
 https://loadbalancing.se/2020/03/11/logstash-pipeline-tester/
 
+There's also a video of how to get started here:
+https://youtu.be/Q3IQeXWoqLQ
+
 Article is dated 2020 but is continously updated whenever there is need to do so.
 
 ## Contributions
