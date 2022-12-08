@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import JSONPretty from 'react-json-pretty';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -9,6 +8,7 @@ import Menu from './Layout/Menu/Menu';
 import {Grid, Paper} from '@mui/material';
 import ConnectBackend from './Util/ConnectBackend';
 import LogstashLogLines from './Components/InputTextarea/LogstashLogLines';
+import {Result} from './Components/Result/Result';
 
 function App() {
 
@@ -54,13 +54,7 @@ function App() {
           logStashResult.length ?
             logStashResult.map((res) => {
               return (
-                <Paper key={btoa(res)}>
-                  <JSONPretty
-                    data-cy="logstash-result"
-                    id="json-pretty"
-                    data={res}
-                  />
-                </Paper>
+                <Result key={btoa(res)} result={res}/>
               );
             }) :
             ''

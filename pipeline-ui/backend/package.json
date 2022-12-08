@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./build/index.js",
-    "dev": "cross-env NODE_ENV=DEV node ./build/index.js",
+    "dev": "cross-env NODE_ENV=DEV nodemon ./src/index.ts",
     "lint": "eslint ./src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
@@ -35,6 +35,7 @@
     "@typescript-eslint/eslint-plugin": "^4.26.1",
     "@typescript-eslint/parser": "^4.26.1",
     "eslint": "^7.28.0",
-    "eslint-config-google": "^0.14.0"
+    "eslint-config-google": "^0.14.0",
+    "ts-node": "^10.9.1"
   }
 }

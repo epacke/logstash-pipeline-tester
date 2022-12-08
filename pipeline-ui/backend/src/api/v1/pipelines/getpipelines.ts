@@ -8,7 +8,7 @@ export interface IPipeline {
 }
 
 // Return file names from directory
-function fromDir(startPath: string, filter: string) {
+function fromDir(startPath: string, filter: string): string[] {
   let foundFiles: string[] = [];
 
   if (!fs.existsSync(startPath)) {
@@ -33,13 +33,11 @@ function fromDir(startPath: string, filter: string) {
 
 // Get pipeline configs from the pipeline directory
 const getConfigFiles = () => {
-  const configFiles = (fromDir('/usr/src/pipeline', '.conf'));
+  const configFiles = fromDir('/usr/src/pipeline', '.conf');
 
-  const pipeLines = [];
+  const pipeLines: IPipeline[] = [];
   for (const configFilePath of configFiles) {
-    const pipeline: Partial<IPipeline> = {};
-
-    pipeline.name = path.dirname(configFilePath)
+    const name = path.dirname(configFilePath)
         .split(path.sep).pop() || 'unknown';
 
     const configFile = fs.readFileSync(configFilePath, 'utf8');
@@ -55,13 +53,9 @@ const getConfigFiles = () => {
     const udpPort = udpMatch.groups?.udpPort;
 
     if (tcpPort) {
-      pipeline.protocol = 'TCP';
-      pipeline.port = tcpPort;
-      pipeLines.push(pipeline);
-    } else if (typeof(udpPort) !== undefined) {
-      pipeline.protocol = 'UDP';
-      pipeline.port = udpPort;
-      pipeLines.push(pipeline);
+      pipeLines.push({name, protocol: 'TCP', port: tcpPort});
+    } else if (udpPort) {
+      pipeLines.push({name, protocol: 'UDP', port: udpPort});
     }
   }
 
