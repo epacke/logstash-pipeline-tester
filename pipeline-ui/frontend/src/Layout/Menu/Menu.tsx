@@ -26,7 +26,7 @@ function ResponsiveAppBar(props: {
 
   const [pipeline, setPipeline] = useState<IPipeline | null>(null);
   const [port, setPort] = useState<string>('');
-  const [protocol, setProtocol] = useState<string>('');
+  const [protocol, setProtocol] = useState<string>('TCP');
   const [portError, setPortError] = useState(false);
 
   useEffect(() => {
