@@ -43,7 +43,7 @@ jobs:
         working-directory: ./pipeline-ui/integration-tests
         run: npm install
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           working-directory: pipeline-ui/integration-tests
           wait-on: 'http://localhost:8080'
@@ -51,6 +51,9 @@ jobs:
       - name: npm install
         working-directory: logstash/tests
         run: npm install
+      - name: Run tests
+        working-directory: logstash/tests
+        run: npm run test
       - name: Stop containers
         if: always()
         run: docker-compose -f "docker-compose.yml" down
