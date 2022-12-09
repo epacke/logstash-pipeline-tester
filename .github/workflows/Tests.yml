@@ -43,11 +43,10 @@ jobs:
         working-directory: ./pipeline-ui/integration-tests
         run: npm install
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           working-directory: pipeline-ui/integration-tests
           wait-on: 'http://localhost:8080'
-          start: npm start
       - name: npm install
         working-directory: logstash/tests
         run: npm install

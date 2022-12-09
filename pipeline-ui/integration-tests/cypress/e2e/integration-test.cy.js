@@ -39,5 +39,20 @@ context('Waiting', () => {
           .should('contain.text', '"test": 123', );
     })
 
+    it('Should be able to view copy button', () => {
+      cy.get('[data-cy="pipeline-select"]').click();
+      cy.get('[data-cy="pipeline-menu-item-generic-json"').click();
+      cy.get('[data-cy="raw-logs-input"] textarea').first()
+          .type('{"test": 123}', {parseSpecialCharSequences: false});
+      cy.get('[data-cy="send-raw-logs"]').click();
+      cy.get(
+          '[data-cy="logstash-result"] pre', {timeout: 60000})
+          .should('contain.text', '"test": 123', );
+      cy.get('[data-cy="logstash-result-container"] [data-cy="copy-result-button').should('be.hidden');
+      cy.get('[data-cy="logstash-result-container"]').trigger('mouseover');
+      cy.get('[data-cy="logstash-result-container"] [data-cy="copy-result-button').should('be.visible');
+    })
+
+
   })
 })

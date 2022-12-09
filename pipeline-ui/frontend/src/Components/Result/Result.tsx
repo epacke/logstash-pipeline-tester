@@ -1,19 +1,29 @@
 import {Box, Button, Paper} from '@mui/material';
 import JSONPretty from 'react-json-pretty';
-import React, {useState} from 'react';
+import React, {useState, useRef, MutableRefObject} from 'react';
 import {ContentCopy} from '@mui/icons-material';
 
 const Result = (props: {result: string}) => {
 
   const [showCopy, setShowCopy] = useState(false);
   const {result} = props;
+  const copyButton = useRef() as MutableRefObject<HTMLButtonElement>;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(result);
   };
 
   return (
-    <Paper sx={{position: 'relative'}}>
+    <Paper
+      sx={{position: 'relative'}}
+      onMouseEnter={() => {
+        setShowCopy(true);
+      }}
+      onMouseLeave={() => {
+        setShowCopy(false);
+      }}
+      data-cy='logstash-result-container'
+    >
       <Box
         sx={{
           position: 'absolute',
@@ -25,6 +35,7 @@ const Result = (props: {result: string}) => {
         }}
       >
         <Button
+          ref={copyButton}
           size='small'
           sx={{
             marginTop: '15px',
@@ -36,18 +47,13 @@ const Result = (props: {result: string}) => {
           }}
           startIcon={<ContentCopy sx={{}} />}
           onClick={handleCopy}
-          data-cy="send-raw-logs"
+          data-cy="copy-result-button"
         >
         Copy to clipboard
         </Button></Box>
       <Box
+        className='result-box'
         sx={{marginTop: '50px'}}
-        onMouseEnter={() => {
-          setShowCopy(true);
-        }}
-        onMouseLeave={() => {
-          setShowCopy(false);
-        }}
       >
         <JSONPretty
           data-cy="logstash-result"
