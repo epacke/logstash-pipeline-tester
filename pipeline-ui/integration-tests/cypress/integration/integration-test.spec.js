@@ -33,7 +33,7 @@ context('Waiting', () => {
       cy.get('[data-cy="pipeline-menu-item-generic-json"').click();
       cy.get('[data-cy="raw-logs-input"] textarea').first()
           .type('{"test": 123}', {parseSpecialCharSequences: false});
-      cy.get('[data-cy="send-raw-logs"]').click();
+      cy.get('[data-cy="send-raw-logs"]').click({force: true});
       cy.get(
           '[data-cy="logstash-result"] pre', {timeout: 60000})
           .should('contain.text', '"test": 123', );
