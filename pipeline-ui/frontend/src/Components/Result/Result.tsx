@@ -1,10 +1,11 @@
 import {Box, Button, Paper} from '@mui/material';
 import JSONPretty from 'react-json-pretty';
-import React from 'react';
+import React, {useState} from 'react';
 import {ContentCopy} from '@mui/icons-material';
 
 const Result = (props: {result: string}) => {
 
+  const [showCopy, setShowCopy] = useState(false);
   const {result} = props;
 
   const handleCopy = () => {
@@ -31,6 +32,7 @@ const Result = (props: {result: string}) => {
             color: '#333',
             width: '150px',
             fontSize: '11px',
+            display: showCopy ? '': 'none',
           }}
           startIcon={<ContentCopy sx={{}} />}
           onClick={handleCopy}
@@ -38,7 +40,15 @@ const Result = (props: {result: string}) => {
         >
         Copy to clipboard
         </Button></Box>
-      <Box sx={{marginTop: '50px'}}>
+      <Box
+        sx={{marginTop: '50px'}}
+        onMouseEnter={() => {
+          setShowCopy(true);
+        }}
+        onMouseLeave={() => {
+          setShowCopy(false);
+        }}
+      >
         <JSONPretty
           data-cy="logstash-result"
           id="json-pretty"

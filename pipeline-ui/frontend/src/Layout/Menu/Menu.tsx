@@ -15,14 +15,21 @@ import FormControl from '@mui/material/FormControl';
 import {useEffect, useState} from 'react';
 import {Backend} from '../../Util/Backend';
 import ValidatePortInput from '../../Util/ValidatePortInput';
+import ToggleMinify from '../../Components/ToggleMinify/ToggleMinify';
 
 function ResponsiveAppBar(props: {
   rawData: string,
   backendConnected: boolean | null,
   setLogstashResult: (result: string[]) => void,
+  handleMinifyChange: (event: React.ChangeEvent<HTMLInputElement>) => void,
 }) {
 
-  const {setLogstashResult, rawData, backendConnected} = props;
+  const {
+    setLogstashResult,
+    rawData,
+    backendConnected,
+    handleMinifyChange,
+  } = props;
 
   const [pipeline, setPipeline] = useState<IPipeline | null>(null);
   const [port, setPort] = useState<string>('');
@@ -101,6 +108,9 @@ function ResponsiveAppBar(props: {
                 </Button>
               </Box>
             </FormControl>
+            <Box mr={3}>
+              <ToggleMinify handleMinifyChange={handleMinifyChange}/>
+            </Box>
             <Box mr={3}>
               <LogstashStatus/>
             </Box>
