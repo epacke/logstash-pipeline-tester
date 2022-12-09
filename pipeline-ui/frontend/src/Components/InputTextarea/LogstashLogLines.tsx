@@ -22,7 +22,6 @@ export default function LogstashLogLines(
     minifyEnabled: boolean,
   },
 ) {
-
   const {setRawData, minifyEnabled} = props;
   const [rowCount, setRowCount] = useState<number>(1);
   const [helperText, setHelperText] = useState<string>('');

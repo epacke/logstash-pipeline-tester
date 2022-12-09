@@ -11,7 +11,10 @@ export default function ToggleMinify(
   const {handleMinifyChange} = props;
 
   return (
-    <Tooltip title={'Tries to minify JSON in the input area'}>
+    <Tooltip
+      title={'Minifies JSON in the input area if the JSON is valid.' +
+        'Only works for one document at the moment'}
+    >
       <FormControlLabel
         control={<Switch defaultChecked={false} onChange={handleMinifyChange}/>}
         label="Minify input JSON"

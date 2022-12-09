@@ -1,4 +1,6 @@
 {
   "video": false,
-  "screenshotOnRunFailure": false
+  "screenshotOnRunFailure": false,
+  "viewportWidth": 1280,
+  "viewportHeight": 720
 }
