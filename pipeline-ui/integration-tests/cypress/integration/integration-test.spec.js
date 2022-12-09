@@ -39,7 +39,7 @@ context('Waiting', () => {
           .should('contain.text', '"test": 123', );
     })
 
-    it.only('Should be able to copy result', () => {
+    it('Should be able to copy result', () => {
       cy.get('[data-cy="pipeline-select"]').click();
       cy.get('[data-cy="pipeline-menu-item-generic-json"').click();
       cy.get('[data-cy="raw-logs-input"] textarea').first()
