@@ -26,7 +26,6 @@ context('Waiting', () => {
       cy.get('[data-cy="pipeline-select"]').click();
       cy.get('[data-cy="pipeline-menu-item-generic-json"').click();
       cy.get('[data-cy="send-port"] input').should('have.value', '5060');
-      //cy.get('[data-cy="send-protocol"]').should('have.value', 'TCP');
     })
 
     it('Should get a json reply when sending valid json to generic-json', () => {
@@ -34,7 +33,7 @@ context('Waiting', () => {
       cy.get('[data-cy="pipeline-menu-item-generic-json"').click();
       cy.get('[data-cy="raw-logs-input"] textarea').first()
           .type('{"test": 123}', {parseSpecialCharSequences: false});
-      cy.get('[data-cy="send-raw-logs"]').click();
+      cy.get('[data-cy="send-raw-logs"]').click({force: true});
       cy.get(
           '[data-cy="logstash-result"] pre', {timeout: 60000})
           .should('contain.text', '"test": 123', );

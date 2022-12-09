@@ -17,6 +17,7 @@ function App() {
   ] = useState<boolean | null>(null);
   const [logStashResult, setLogstashResult] = useState<string[]>([]);
   const [rawData, setRawData] = useState<string>('');
+  const [minifyEnabled, setMinifyEnabled] = useState(false);
 
   const handleLogStashResult = (message: string) => {
     setLogstashResult((prevState) => {
@@ -28,6 +29,10 @@ function App() {
     ConnectBackend(setBackendConnected, handleLogStashResult);
   }, []);
 
+  const handleMinifyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMinifyEnabled(event.target.checked);
+  };
+
   return (
     <Grid container spacing={2} p={2}>
       <Grid item xs={12}>
@@ -35,6 +40,7 @@ function App() {
           setLogstashResult={setLogstashResult}
           rawData={rawData}
           backendConnected={backendConnected}
+          handleMinifyChange={handleMinifyChange}
         />
       </Grid>
       <Grid item xs={12}>
@@ -46,7 +52,10 @@ function App() {
           display: 'flex',
           padding: '1em 1em 0em 1em',
         }}>
-          <LogstashLogLines setRawData={setRawData}/>
+          <LogstashLogLines
+            minifyEnabled={minifyEnabled}
+            setRawData={setRawData}
+          />
         </Paper>
       </Grid>
       <Grid item xs={12}>
