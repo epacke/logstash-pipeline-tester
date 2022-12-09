@@ -47,7 +47,6 @@ jobs:
         with:
           working-directory: pipeline-ui/integration-tests
           wait-on: 'http://localhost:8080'
-          start: npm start
       - name: npm install
         working-directory: logstash/tests
         run: npm install
