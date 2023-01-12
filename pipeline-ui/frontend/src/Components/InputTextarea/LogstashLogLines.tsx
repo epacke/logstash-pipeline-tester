@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  ChangeEvent,
   useRef,
   MutableRefObject,
   useEffect,
@@ -8,46 +7,65 @@ import {
 } from 'react';
 import {TextField} from '@mui/material';
 
-const minifyJson = (rawString: string) => {
-  let result = rawString;
-  try {
-    result = JSON.stringify(JSON.parse(rawString));
-  } catch {}
-  return result;
-};
-
 export default function LogstashLogLines(
   props: {
     setRawData: (rawData: string) => void,
+    rawData: string,
     minifyEnabled: boolean,
   },
 ) {
 
-  const {setRawData, minifyEnabled} = props;
+  const {setRawData, rawData, minifyEnabled} = props;
   const [rowCount, setRowCount] = useState<number>(1);
-  const [helperText, setHelperText] = useState<string>('');
+  const [helperText, setHelperText] = useState<JSX.Element>(<></>);
+  const [validJson, setValidJson] = useState<boolean>(false);
   const logInput = useRef() as MutableRefObject<HTMLTextAreaElement>;
 
   useEffect(() => {
-    setHelperText(`Will send ${rowCount} document${
-      rowCount == 1 ? '': 's'
-    } to logstash`);
-  }, [rowCount]);
+    handleRawDataChange();
+  }, [minifyEnabled, rowCount]);
 
   useEffect(() => {
-    handleRawDataBlur();
+    const jsonState = minifyEnabled && !validJson ?
+      <span
+        style={{color: 'red'}}>
+         &nbsp;Can&apos;t minify: Invalid JSON
+      </span> :
+      null;
+    setHelperText(
+      <>
+        <span>
+          {
+            `Will send ${rowCount} document${
+              rowCount == 1 ? '': 's'
+            }`
+          }
+        </span>
+        {jsonState}
+      </>,
+    );
+  }, [rowCount, rawData, minifyEnabled]);
+
+  useEffect(() => {
+    handleRawDataChange();
   }, [minifyEnabled]);
 
-  const handleRawDataBlur = () => {
+  const minifyJson = (rawString: string) => {
+    let result = rawString;
+    try {
+      result = JSON.stringify(JSON.parse(rawString));
+      setValidJson(true);
+    } catch {
+      setValidJson(false);
+    }
+    return result;
+  };
+
+  const handleRawDataChange = () => {
     const {value} = logInput.current;
     if (minifyEnabled) {
       logInput.current.value = minifyJson(value);
     }
-  };
-
-  const handleRawDataChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    const {target} = e;
-    const {value} = target;
     setRowCount(value.split(/\r\n|\r|\n/).length);
     setRawData(value);
   };
@@ -61,7 +79,8 @@ export default function LogstashLogLines(
       defaultValue=''
       multiline
       onChange={handleRawDataChange}
-      onBlur={handleRawDataBlur}
+      onPaste={handleRawDataChange}
+      onBlur={handleRawDataChange}
       data-cy='raw-logs-input'
       maxRows={4}
       inputRef={logInput}

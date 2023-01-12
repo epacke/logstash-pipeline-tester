@@ -55,6 +55,7 @@ function App() {
           <LogstashLogLines
             minifyEnabled={minifyEnabled}
             setRawData={setRawData}
+            rawData={rawData}
           />
         </Paper>
       </Grid>
