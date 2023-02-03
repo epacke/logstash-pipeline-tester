@@ -14,5 +14,6 @@ COPY ./supervisor-config/supervisord.conf /etc/
 RUN rm /usr/share/logstash/config/logstash.yml
 RUN rm /usr/share/logstash/config/pipelines.yml
 RUN rm -rf /usr/share/logstash/pipeline
+USER 1000
 
 ENTRYPOINT "supervisord"
