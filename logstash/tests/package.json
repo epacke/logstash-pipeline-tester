@@ -19,7 +19,7 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
-    "axios": "^0.27.2",
+    "axios": "^1.6.0",
     "ws": "^8.14.2"
   }
 }
