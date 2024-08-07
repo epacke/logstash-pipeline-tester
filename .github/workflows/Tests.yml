@@ -38,7 +38,7 @@ jobs:
         with:
           node-version: '16'
       - name: Start containers
-        run: docker-compose -f "docker-compose.yml" up -d --build
+        run: docker compose -f "docker-compose.yml" up -d --build
       - name: npm install
         working-directory: ./pipeline-ui/integration-tests
         run: npm install
@@ -55,4 +55,4 @@ jobs:
         run: npm run test
       - name: Stop containers
         if: always()
-        run: docker-compose -f "docker-compose.yml" down
+        run: docker compose -f "docker-compose.yml" down
