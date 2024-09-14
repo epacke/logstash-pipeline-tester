@@ -1,3 +1,5 @@
+this is a demo of git
+
 # About
 This started out as a way to make it easy to test the logstash configuration for people without much linux know-how (and from my own frustration with how hard it was). Then it kind of grew into an interface, and here we are.
 
