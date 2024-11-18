@@ -3,7 +3,7 @@ This started out as a way to make it easy to test the logstash configuration for
 
 It's written fast and the code could use a bit of additional love, but it works fine.
 
-## How to start
+# How to start
 Documentation on how to get going is available here:
 https://loadbalancing.se/2020/03/11/logstash-pipeline-tester/
 
@@ -12,8 +12,20 @@ https://youtu.be/Q3IQeXWoqLQ
 
 Article is dated 2020 but is continously updated whenever there is need to do so.
 
-## Contributions
-I gladly accept pull requests.
+# Contribute
+I gladly accept pull requests. If you have a pipeline you'd like to share/contribute that'd be great too.
+If you don't know how to do forking and pull requests I can handle that part, just let me know via an issue
+or dig up my contact details [here](https://loadbalancing.se/about/).
+
+## Developing the application (ie. express/React)
+1. Uncomment the pipeline-ui container from `docker-compose.yml`
+2. Find the IP of your machine with ie `ifconfig` or `ip addr`
+3. Run `export BACKEND_IP=192.168.1.10` where `192.168.1.10` is your main IP if the client
+2. Start logstash with `BACKEND_ENDPOINT=http://${BACKEND_IP}:8080/api/v1/receiveLogstashOutput docker compose up`
+3. In another terminal, start backend with `cd pipeline-ui/backend; npm run dev`
+4. In yet another terminal, start frontend with `cd pipeline-ui/frontend`
+
+Now you can update the code freely and both backend and frontend should refresh automatically.
 
 ## Reporting issues
 First, please check if there's any [current issues](https://github.com/epacke/logstash-pipeline-tester/issues) that matches your problem. If not, please feel free to submit an issue here at Github.

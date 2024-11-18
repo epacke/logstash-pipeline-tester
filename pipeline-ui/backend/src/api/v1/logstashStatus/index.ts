@@ -4,7 +4,7 @@ const router = express.Router();
 // Monitor the logstash container
 import {ILogstashAPIResponse, ILogstashStatus} from '../../../interfaces';
 import request from 'superagent';
-import {LOGSTASH} from '../../../util/LogstashAddress';
+import {LOGSTASH} from '../../../constants/LogstashAddress';
 
 router.get('/', async function(req, res) {
   const responseJson: ILogstashStatus = {

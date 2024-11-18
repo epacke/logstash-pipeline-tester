@@ -1,6 +1,6 @@
 // Send data to a logstash pipeline using UDP
 import dgram from 'dgram';
-import {LOGSTASH} from '../../../util/LogstashAddress';
+import {LOGSTASH} from '../../../constants/LogstashAddress';
 
 function sendUDP(payload: string, port: number) {
   const message = new Buffer(payload);
