@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import BACKEND_ENDPOINT from '../../../constants/BackendEndpoint';
 
 export interface IPipeline {
   name: string,
@@ -33,7 +34,7 @@ function fromDir(startPath: string, filter: string): string[] {
 
 // Get pipeline configs from the pipeline directory
 const getConfigFiles = () => {
-  const configFiles = fromDir('/usr/src/pipeline', '.conf');
+  const configFiles = fromDir(BACKEND_ENDPOINT, '.conf');
 
   const pipeLines: IPipeline[] = [];
   for (const configFilePath of configFiles) {

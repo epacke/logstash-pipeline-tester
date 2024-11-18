@@ -1,12 +1,12 @@
 version: "3"
 services:
-  pipeline-ui:
-    build: "./pipeline-ui"
-    container_name: "config_tester"
-    ports:
-      - "8080:8080"
-    volumes:
-      - "./logstash/logstash-config/pipeline:/usr/src/pipeline"
+#  pipeline-ui:
+#    build: "./pipeline-ui"
+#    container_name: "config_tester"
+#    ports:
+#      - "8080:8080"
+#    volumes:
+#      - "./logstash/logstash-config/pipeline:/usr/src/pipeline"
   logstash:
     build: "./logstash"
     container_name: "logstash"
