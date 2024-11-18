@@ -6,16 +6,16 @@
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@fontsource/roboto": "^4.5.8",
-    "@mui/styled-engine-sc": "^5.14.10",
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
+    "@mui/styled-engine-sc": "^5.14.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
     "cross-env": "^7.0.3",
-    "react": "^17.0.2",
+    "react": "^18.3.1",
     "react-json-pretty": "^2.2.0",
     "styled-components": "^5.3.9",
     "typescript": "~4.9.4"
@@ -44,14 +44,14 @@
     ]
   },
   "devDependencies": {
-    "@types/react": "^17.0.52",
-    "@types/react-dom": "^17.0.18",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "@typescript-eslint/eslint-plugin": "^6.7.2",
     "@typescript-eslint/parser": "^6.7.2",
     "eslint": "^8.49.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-react": "^7.33.2",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.3.1",
     "react-scripts": "^5.0.1"
   }
 }
