@@ -1,16 +1,18 @@
 version: "3"
 services:
-#  pipeline-ui:
-#    build: "./pipeline-ui"
-#    container_name: "config_tester"
-#    ports:
-#      - "8080:8080"
-#    volumes:
-#      - "./logstash/logstash-config/pipeline:/usr/src/pipeline"
+  pipeline-ui:
+    build: "./pipeline-ui"
+    container_name: "config_tester"
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./logstash/logstash-config/pipeline:/usr/src/pipeline"
   logstash:
     build: "./logstash"
     container_name: "logstash"
     hostname: "logstash"
+    environment:
+      BACKEND_ENDPOINT: "${BACKEND_ENDPOINT:-http://pipeline-ui:8080/api/v1/receiveLogstashOutput}"
     ports:
       - "5245:5245"
       - "9600:9600"

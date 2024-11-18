@@ -19,7 +19,9 @@ or dig up my contact details [here](https://loadbalancing.se/about/).
 
 ## Developing the application (ie. express/React)
 1. Uncomment the pipeline-ui container from `docker-compose.yml`
-2. Start logstash with `sudo docker compose up`
+2. Find the IP of your machine with ie `ifconfig` or `ip addr`
+3. Run `export BACKEND_IP=192.168.1.10` where `192.168.1.10` is your main IP if the client
+2. Start logstash with `BACKEND_ENDPOINT=http://${BACKEND_IP}:8080/api/v1/receiveLogstashOutput docker compose up`
 3. In another terminal, start backend with `cd pipeline-ui/backend; npm run dev`
 4. In yet another terminal, start frontend with `cd pipeline-ui/frontend`
 
