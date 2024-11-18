@@ -20,6 +20,10 @@
     "styled-components": "^5.3.9",
     "typescript": "~4.9.4"
   },
+  "overrides": {
+    "nth-check": "https://registry.npmjs.org/nth-check/-/nth-check-2.1.1.tgz",
+    "postcss": "https://registry.npmjs.org/postcss/-/postcss-8.4.31.tgz"
+  },
   "scripts": {
     "start": "cross-env NODE_ENV=production react-scripts start",
     "dev": "cross-env NODE_ENV=development react-scripts start",
