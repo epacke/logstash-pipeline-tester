@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./build/index.js",
-    "dev": "cross-env NODE_ENV=DEV BACKEND_ENDPOINT=../../logstash/logstash-config/pipeline nodemon ./src/index.ts",
+    "dev": "cross-env NODE_ENV=DEV PIPELINE_DIRECTORY=../../logstash/logstash-config/pipeline nodemon ./src/index.ts",
     "lint": "eslint ./src/**/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc"
