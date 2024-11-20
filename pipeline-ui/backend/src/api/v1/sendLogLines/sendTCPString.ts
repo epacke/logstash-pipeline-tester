@@ -9,7 +9,7 @@ function sendTCP(payload: string, port: number, retries = 0) {
     conn.write(payload);
   }).on('error', function(err) {
     logger.error({
-      message: `Failed to send payload to ${port}.` +
+      message: `Failed to send payload to ${port}. ` +
         `Has all logstash pipelines started successfully?`,
       payload,
       details: err.message,

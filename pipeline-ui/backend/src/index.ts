@@ -2,17 +2,17 @@ import express from 'express';
 import bodyParser from 'body-parser';
 // @ts-ignore - Problem with the cors typing.
 import cors from 'cors';
+import pinoHttp from 'pino-http';
+import expressWs from 'express-ws';
+import logger from './util/Logger';
 import apiV1Pipelines from './api/v1/pipelines/index';
 import apiV1SendLogLines from './api/v1/sendLogLines/index';
 import apiV1ReceiveLogstashOutput from './api/v1/receiveLogstashOutput/index';
 import apiV1LogstashStatus from './api/v1/logstashStatus/index';
-import pinoHttp from 'pino-http';
 
 const dummyApp = express();
 const port = 8080;
 
-import expressWs from 'express-ws';
-import logger from './util/Logger';
 expressWs(dummyApp);
 const {app, getWss} = expressWs(express());
 

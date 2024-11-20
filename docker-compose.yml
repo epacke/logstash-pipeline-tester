@@ -2,6 +2,8 @@ services:
   pipeline-ui:
     build: "./pipeline-ui"
     container_name: "config_tester"
+    environment:
+      LOG_LEVEL: warn
     ports:
       - "8080:8080"
     volumes:
