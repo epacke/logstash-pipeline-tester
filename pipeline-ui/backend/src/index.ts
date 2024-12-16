@@ -25,7 +25,7 @@ app.use(httpLogger);
 
 // Render the default page when browsing the root
 app.get('/', function(req, res) {
-  res.sendfile('index.html', {root: __dirname + '/public/index.html'} );
+  res.sendFile('index.html', {root: __dirname + '/public/index.html'} );
 });
 
 app.ws('/api/v1/getLogstashOutput', (ws, req) => {});
