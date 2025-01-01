@@ -18,7 +18,7 @@
     "typescript": "^4.6.2"
   },
   "dependencies": {
-    "axios": "^1.7.8",
+    "axios": "^1.7.9",
     "ws": "^8.18.0"
   }
 }
