@@ -24,7 +24,7 @@
     "express": "^4.21.2",
     "express-ws": "^4.0.0",
     "http": "0.0.0",
-    "nodemon": "^3.1.7",
+    "nodemon": "^3.1.9",
     "pino": "^9.5.0",
     "pino-http": "^10.3.0",
     "pino-pretty": "^13.0.0",
