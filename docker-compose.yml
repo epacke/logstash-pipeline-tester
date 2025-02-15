@@ -18,6 +18,7 @@ services:
       - "5245:5245"
       - "9600:9600"
       - "5060:5060"
+      - "2055:2055/udp"
     volumes:
       - "./logstash/logstash-config/logstash.yml:/usr/share/logstash/config/logstash.yml"
       - "./logstash/logstash-config/pipelines.yml:/usr/share/logstash/config/pipelines.yml"
