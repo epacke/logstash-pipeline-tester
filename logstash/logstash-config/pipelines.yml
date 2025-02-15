@@ -6,3 +6,5 @@
   path.config: "/usr/share/logstash/pipeline/f5-syslog"
 - pipeline.id: generic-json
   path.config: "/usr/share/logstash/pipeline/generic-json"
+- pipeline.id: netflow
+  path.config: "/usr/share/logstash/pipeline/netflow"
