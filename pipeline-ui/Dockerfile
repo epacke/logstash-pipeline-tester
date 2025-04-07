@@ -1,4 +1,4 @@
-FROM 22-alpine3.20 as compile-image
+FROM node:22-alpine3.20 as compile-image
 
 # npm install frontend
 COPY ./frontend/package.json /home/node/app/frontend/package.json
@@ -22,7 +22,7 @@ WORKDIR /home/node/app/backend
 RUN npm run build
 
 # Build app container
-FROM 22-alpine3.20 as runtime-image
+FROM node:22-alpine3.20 as runtime-image
 WORKDIR /usr/src/app
 COPY --from=compile-image /home/node/app/backend/build/ /usr/src/app
 COPY --from=compile-image /home/node/app/frontend/build /usr/src/app/public
