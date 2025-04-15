@@ -1,17 +1,11 @@
 import pino from 'pino';
-import pinoPretty from 'pino-pretty';
 
 // Environment configuration
 const isDevelopment = process.env.NODE_ENV === 'development';
 const logLevel = process.env.LOG_LEVEL || (isDevelopment ? 'debug' : 'info');
 
 // Create a pretty print stream for development
-const prettyStream = pinoPretty({
-  colorize: true,
-  levelFirst: true,
-  translateTime: 'SYS:standard',
-  ignore: 'pid,hostname',
-});
+
 
 // Logger configuration
 const logger = pino({
@@ -23,7 +17,7 @@ const logger = pino({
   timestamp: () => `,"time":"${new Date().toISOString()}"`,
   formatters: {
     level: (label) => {
-      return { level: label.toUpperCase() };
+      return {level: label.toUpperCase()};
     },
   },
   // Use pretty print in development, JSON in production
@@ -34,14 +28,14 @@ const logger = pino({
       levelFirst: true,
       translateTime: 'SYS:standard',
       ignore: 'pid,hostname',
-    }
+    },
   } : undefined,
 });
 
 // Create child loggers for different parts of the application
-export const apiLogger = logger.child({ module: 'api' });
-export const websocketLogger = logger.child({ module: 'websocket' });
-export const pipelineLogger = logger.child({ module: 'pipeline' });
+export const apiLogger = logger.child({module: 'api'});
+export const websocketLogger = logger.child({module: 'websocket'});
+export const pipelineLogger = logger.child({module: 'pipeline'});
 
 // Export the main logger as default
 export default logger;
