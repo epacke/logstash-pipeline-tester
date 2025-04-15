@@ -7,10 +7,11 @@ module.exports = defineConfig({
   viewportHeight: 720,
   chromeWebSecurity: false,
   e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
+    baseUrl: `http://${process.env.BACKEND_IP || 'localhost'}:8080`,
     setupNodeEvents(on, config) {
-      return require('./cypress/plugins/index.js')(on, config)
+      // pass environment variables to Cypress
+      config.env.BACKEND_IP = process.env.BACKEND_IP;
+      return config;
     },
   },
 })
