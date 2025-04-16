@@ -12,7 +12,7 @@ RUN npm ci
 # Install backend dependencies
 COPY ./backend/package*.json ../backend/
 WORKDIR /home/node/app/backend
-RUN npm ci --only=production
+RUN npm ci --only=production && npm install --save-dev @types/node
 
 # Build frontend
 COPY ./frontend/ ../frontend/
