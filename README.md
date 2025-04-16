@@ -1,53 +1,90 @@
-# About
-This started out as a way to make it easy to test the logstash configuration for people without much linux know-how (and from my own frustration with how hard it was). Then it kind of grew into an interface, and here we are.
+# Logstash Pipeline Tester
 
-It's written fast and the code could use a bit of additional love, but it works fine.
+A tool to make it easy to test Logstash configurations, especially for users without extensive Linux knowledge. It provides a user-friendly interface for testing and validating Logstash pipelines.
 
-# How to start
-Documentation on how to get going is available here:
-https://loadbalancing.se/2020/03/11/logstash-pipeline-tester/
+## Quick Start
 
-There's also a video of how to get started here:
-https://youtu.be/Q3IQeXWoqLQ
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/epacke/logstash-pipeline-tester.git
+   cd logstash-pipeline-tester
+   ```
 
-Article is dated 2020 but is continously updated whenever there is need to do so.
+2. Start the services:
+   ```bash
+   docker compose up
+   ```
 
-# Contribute
-I gladly accept pull requests. If you have a pipeline you'd like to share/contribute that'd be great too.
-If you don't know how to do forking and pull requests I can handle that part, just let me know via an issue
-or dig up my contact details [here](https://loadbalancing.se/about/).
+3. Access the web interface at `http://localhost:3000`
 
-## Contributing to the application (express/React)
-If you want to to develop the application you'll need a local development environment
-on your client. Follow these steps to get started:
+For detailed setup instructions, see:
+- [Setup Guide](https://loadbalancing.se/2020/03/11/logstash-pipeline-tester/)
+- [Video Tutorial](https://youtu.be/Q3IQeXWoqLQ)
 
-1. Find the IP of your machine with ie `ifconfig` or `ip addr`
-2. Run `export BACKEND_IP=192.168.1.10` where `192.168.1.10` is your main IP if the client
-3. Start logstash with `BACKEND_ENDPOINT=http://${BACKEND_IP}:8080/api/v1/receiveLogstashOutput docker compose up logstash`
+*Note: The article is from 2020 but is continuously updated as needed.*
+
+## Development Setup
+
+To develop the application locally:
+
+1. Find your machine's IP address:
+   ```bash
+   # Linux/macOS
+   ifconfig
+   # or
+   ip addr
    
-    *Note that some flavors uses `docker compose` instead of `docker-compose`*
-4. In another terminal, start backend with `cd pipeline-ui/backend; npm run dev`
-5. In yet another terminal, start frontend with `cd pipeline-ui/frontend`
+   # Windows
+   ipconfig
+   ```
 
-Now you can update the code freely and both backend and frontend should refresh automatically.
+2. Set the backend IP environment variable:
+   ```bash
+   export BACKEND_IP=192.168.1.10  # Replace with your actual IP
+   ```
 
-## Reporting issues
-First, please check if there's any [current issues](https://github.com/epacke/logstash-pipeline-tester/issues) that matches your problem. If not, please feel free to submit an issue here at Github.
+3. Start Logstash:
+   ```bash
+   BACKEND_ENDPOINT=http://${BACKEND_IP}:8080/api/v1/receiveLogstashOutput docker compose up logstash
+   ```
 
-I have very limited time so I won't be able to act fast on any issue but it's always good to have it logged and who knows, maybe someone else will pick it up and make a PR.
+4. Start the backend (in a new terminal):
+   ```bash
+   cd pipeline-ui/backend
+   npm run dev
+   ```
 
-# Application component diagram
-<p align="center"><img src="media/pipeline-tester-diagram.png"/></p>
+5. Start the frontend (in another terminal):
+   ```bash
+   cd pipeline-ui/frontend
+   npm start
+   ```
 
-# Screenshots
-<p align="center"><img src="media/screenshot.png"/></p>
+The application will automatically refresh when you make changes to the code.
 
-# Credits
-* F5 Example pipeline copied (and slightly modified) from [here](https://github.com/OutsideIT/logstash_filter_f5)
+## Contributing
 
-## Icons/media
-https://www.svgrepo.com/svg/289194/log-wood
-<a href="https://www.vecteezy.com/free-vector/wood-logs">Wood Logs Vectors by Vecteezy</a>
+Contributions are welcome! You can:
+- Submit pull requests
+- Share new pipeline configurations
+- Report issues
 
-## Great tool for cleaning up SVGs
-https://iconly.io/tools/svg-cleaner
+If you're new to GitHub workflows, feel free to:
+1. Create an issue describing your contribution
+2. Contact me via https://loadbalancing.se/about/
+
+## Architecture
+
+<p align="center"><img src="media/pipeline-tester-diagram.png" alt="Application Component Diagram"/></p>
+
+## Screenshots
+
+<p align="center"><img src="media/screenshot.png" alt="Application Screenshot"/></p>
+
+## Credits
+
+- F5 Example pipeline adapted from [OutsideIT/logstash_filter_f5](https://github.com/OutsideIT/logstash_filter_f5)
+- Icons/media:
+  - [Log Wood Icon](https://www.svgrepo.com/svg/289194/log-wood)
+  - [Wood Logs Vectors](https://www.vecteezy.com/free-vector/wood-logs) by Vecteezy
+- SVG Optimization Tool: [Iconly SVG Cleaner](https://iconly.io/tools/svg-cleaner)

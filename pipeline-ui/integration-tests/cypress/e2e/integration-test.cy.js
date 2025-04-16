@@ -3,7 +3,7 @@
 context('Waiting', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost:8080/');
+    cy.visit('/');
   })
 
   describe('Interface tests', () => {
@@ -52,7 +52,6 @@ context('Waiting', () => {
       cy.get('[data-cy="logstash-result-container"]').trigger('mouseover');
       cy.get('[data-cy="logstash-result-container"] [data-cy="copy-result-button').should('be.visible');
     })
-
 
   })
 })
