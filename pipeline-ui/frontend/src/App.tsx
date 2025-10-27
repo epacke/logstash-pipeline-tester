@@ -62,9 +62,9 @@ function App() {
       <Grid item xs={12}>
         {
           logStashResult.length ?
-            logStashResult.map((res) => {
+            logStashResult.map((res, index) => {
               return (
-                <Result key={btoa(res)} result={res}/>
+                <Result key={index} result={res}/>
               );
             }) :
             ''
