@@ -10,6 +10,23 @@ import ConnectBackend from './Util/ConnectBackend';
 import LogstashLogLines from './Components/InputTextarea/LogstashLogLines';
 import {Result} from './Components/Result/Result';
 
+// Content-based hash function that handles Unicode characters including emojis
+// Processes entire string to avoid collisions with similar log content
+const generateKey = (str: string): string => {
+  // Use UTF-8 encoding to properly handle Unicode characters
+  const utf8Bytes = new TextEncoder().encode(str);
+  let hash = 0;
+
+  // Hash all bytes to ensure uniqueness even with similar content
+  for (let i = 0; i < utf8Bytes.length; i++) {
+    hash = ((hash << 5) - hash) + utf8Bytes[i];
+    hash = hash & hash; // Convert to 32-bit integer
+  }
+
+  // Combine hash with length for additional uniqueness
+  return `result-${Math.abs(hash)}-${str.length}`;
+};
+
 function App() {
 
   const [
@@ -64,7 +81,7 @@ function App() {
           logStashResult.length ?
             logStashResult.map((res) => {
               return (
-                <Result key={btoa(res)} result={res}/>
+                <Result key={generateKey(res)} result={res}/>
               );
             }) :
             ''
