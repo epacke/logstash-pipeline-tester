@@ -5,7 +5,7 @@ const BackendConnection = async (setBackendConnected: (status: boolean) => void,
   let ws: WebSocket;
   try {
     ws = await new WebSocket(`${webSocketsBackend}/api/v1/getLogstashOutput`);
-  } catch (err) {
+  } catch (_err) {
     console.error('Unable to connect to the backend');
     throw new Error('Unable to connect to the backend');
   }
@@ -29,7 +29,7 @@ const BackendConnection = async (setBackendConnected: (status: boolean) => void,
       try {
         await BackendConnection(setBackendConnected, handleLogStashResult);
         clearInterval(t);
-      } catch (e) {
+      } catch (_e) {
         console.error('Reconnect failed');
         throw new Error('Reconnect failed');
       }

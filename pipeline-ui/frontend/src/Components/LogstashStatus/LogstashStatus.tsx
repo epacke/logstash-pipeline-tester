@@ -60,7 +60,7 @@ const getLogstashState = async (
     } else {
       setLogStashConnected(true);
     }
-  } catch (e) {
+  } catch (_e) {
     setLogStashConnected(false);
   }
 };
