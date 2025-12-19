@@ -8,7 +8,7 @@ import Menu from './Layout/Menu/Menu';
 import {Grid, Paper} from '@mui/material';
 import ConnectBackend from './Util/ConnectBackend';
 import LogstashLogLines from './Components/InputTextarea/LogstashLogLines';
-import {Result} from './Components/Result/Result';
+import { Result } from './Components/Result/Result';
 
 // Content-based hash function that handles Unicode characters including emojis
 // Processes entire string to avoid collisions with similar log content
