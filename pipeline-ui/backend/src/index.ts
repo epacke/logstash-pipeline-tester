@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
   res.sendFile('index.html', {root: path.join(__dirname, 'public')} );
 });
 
-app.ws('/api/v1/getLogstashOutput', (ws, req) => {});
+app.ws('/api/v1/getLogstashOutput', (_ws, _req) => {});
 app.use('/api/v1/pipelines', apiV1Pipelines);
 app.use('/api/v1/sendLogLines', apiV1SendLogLines);
 app.use('/api/v1/receiveLogstashOutput', apiV1ReceiveLogstashOutput);

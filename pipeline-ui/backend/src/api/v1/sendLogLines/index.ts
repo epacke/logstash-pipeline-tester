@@ -6,9 +6,14 @@ const router = express.Router();
 
 // Receive lines from the web ui
 router.post('/', function(req, res) {
-  let {sendString, port, protocol} = req.body;
+  let {sendString} = req.body;
+  const {port, protocol} = req.body;
   sendString = `${sendString}\n`;
-  protocol === 'TCP' ? sendTCP(sendString, port) : sendUDP(sendString, port);
+  if (protocol === 'TCP') {
+    sendTCP(sendString, port);
+  } else {
+    sendUDP(sendString, port);
+  }
   res.status(200).end();
 });
 

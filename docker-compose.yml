@@ -7,11 +7,14 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - "./logstash/logstash-config/pipeline:/usr/src/pipeline"
+      - "./logstash/logstash-config/pipeline:/usr/src/pipeline:z"
   logstash:
     build: "./logstash"
     container_name: "logstash"
     hostname: "logstash"
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       BACKEND_ENDPOINT: "${BACKEND_ENDPOINT:-http://pipeline-ui:8080/api/v1/receiveLogstashOutput}"
     ports:
@@ -20,8 +23,8 @@ services:
       - "5060:5060"
       - "2055:2055/udp"
     volumes:
-      - "./logstash/logstash-config/logstash.yml:/usr/share/logstash/config/logstash.yml"
-      - "./logstash/logstash-config/pipelines.yml:/usr/share/logstash/config/pipelines.yml"
-      - "./logstash/logstash-config/pipeline:/usr/share/logstash/pipeline"
-      - "./logstash/logstash-config/dictionaries:/usr/share/logstash/dictionaries"
-      - "./logstash/logstash-config/patterns:/usr/share/logstash/patterns"
+      - "./logstash/logstash-config/logstash.yml:/usr/share/logstash/config/logstash.yml:z"
+      - "./logstash/logstash-config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:z"
+      - "./logstash/logstash-config/pipeline:/usr/share/logstash/pipeline:z"
+      - "./logstash/logstash-config/dictionaries:/usr/share/logstash/dictionaries:z"
+      - "./logstash/logstash-config/patterns:/usr/share/logstash/patterns:z"
