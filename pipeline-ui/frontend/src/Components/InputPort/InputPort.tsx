@@ -16,7 +16,7 @@ export default function InputPort(props: IInputPortProps) {
 
   useEffect(() => {
     setError(!ValidatePortInput(port) && port !== '');
-  }, [port]);
+  }, [port, setError]);
 
   const handleChange = (event: SyntheticEvent) => {
     const {value} = event.target as HTMLInputElement;

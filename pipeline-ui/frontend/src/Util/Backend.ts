@@ -1,8 +1,7 @@
 const {protocol, host} = window.location;
 const wsProtocol = protocol === 'https:' ? 'wss': 'ws';
 
-const backendHost = import.meta.env.MODE === 'development' ? 'localhost:8080': host;
-const webSocketsBackend = `${wsProtocol}://${backendHost}`;
-const Backend = `${protocol}//${backendHost}`;
+const webSocketsBackend = `${wsProtocol}://${host}`;
+const Backend = `${protocol}//${host}`;
 
 export {Backend, webSocketsBackend};

@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
   useRef,
   MutableRefObject,
+  useCallback,
   useEffect,
   useState,
 } from 'react';
@@ -21,9 +22,29 @@ export default function LogstashLogLines(
   const [validJson, setValidJson] = useState<boolean>(false);
   const logInput = useRef() as MutableRefObject<HTMLTextAreaElement>;
 
+  const minifyJson = useCallback((rawString: string) => {
+    let result = rawString;
+    try {
+      result = JSON.stringify(JSON.parse(rawString));
+      setValidJson(true);
+    } catch {
+      setValidJson(false);
+    }
+    return result;
+  }, []);
+
+  const handleRawDataChange = useCallback(() => {
+    const {value} = logInput.current;
+    if (minifyEnabled) {
+      logInput.current.value = minifyJson(value);
+    }
+    setRowCount(value.split(/\r\n|\r|\n/).length);
+    setRawData(value);
+  }, [minifyEnabled, setRawData, minifyJson]); // eslint-disable-line react-hooks/exhaustive-deps -- logInput is a ref, intentionally omitted
+
   useEffect(() => {
     handleRawDataChange();
-  }, [minifyEnabled, rowCount]);
+  }, [minifyEnabled, rowCount, handleRawDataChange]);
 
   useEffect(() => {
     const jsonState = minifyEnabled && !validJson ?
@@ -44,31 +65,11 @@ export default function LogstashLogLines(
         {jsonState}
       </>,
     );
-  }, [rowCount, rawData, minifyEnabled]);
+  }, [rowCount, rawData, minifyEnabled, validJson]);
 
   useEffect(() => {
     handleRawDataChange();
-  }, [minifyEnabled]);
-
-  const minifyJson = (rawString: string) => {
-    let result = rawString;
-    try {
-      result = JSON.stringify(JSON.parse(rawString));
-      setValidJson(true);
-    } catch {
-      setValidJson(false);
-    }
-    return result;
-  };
-
-  const handleRawDataChange = () => {
-    const {value} = logInput.current;
-    if (minifyEnabled) {
-      logInput.current.value = minifyJson(value);
-    }
-    setRowCount(value.split(/\r\n|\r|\n/).length);
-    setRawData(value);
-  };
+  }, [minifyEnabled, handleRawDataChange]);
 
   return (
     <TextField

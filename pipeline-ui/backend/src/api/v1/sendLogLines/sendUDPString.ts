@@ -6,7 +6,7 @@ function sendUDP(payload: string, port: number) {
   const message = new Buffer(payload);
 
   const client = dgram.createSocket('udp4');
-  client.send(message, 0, message.length, port, LOGSTASH, function(err, bytes) {
+  client.send(message, 0, message.length, port, LOGSTASH, function(err, _bytes) {
     if (err) throw err;
     client.close();
   });
