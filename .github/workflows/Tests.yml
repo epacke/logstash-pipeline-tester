@@ -46,7 +46,8 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           working-directory: pipeline-ui/integration-tests
-          wait-on: 'http://localhost:8080'
+          wait-on: 'http://localhost:8080, http://localhost:9600'
+          wait-on-timeout: 300
       - name: npm install
         working-directory: logstash/tests
         run: npm install
