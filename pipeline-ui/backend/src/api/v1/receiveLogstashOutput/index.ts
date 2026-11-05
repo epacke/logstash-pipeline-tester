@@ -1,4 +1,5 @@
 import express from 'express';
+import type WebSocket from 'ws';
 import {getWss} from '../../../index';
 
 const router = express.Router();
@@ -6,7 +7,7 @@ const router = express.Router();
 // it over websocket to all connected clients
 router.post('/', function(req, res) {
   const body = req.body;
-  getWss().clients.forEach(function(client) {
+  getWss().clients.forEach(function(client: WebSocket) {
     client.send(JSON.stringify(body, null, 4));
   });
   res.status(200).end();
