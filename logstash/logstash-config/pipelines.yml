@@ -3,7 +3,7 @@
 #   https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html
 
 - pipeline.id: f5-syslog
-  path.config: "/usr/share/logstash/pipeline/f5-syslog"
+  path.config: "/usr/share/logstash/pipeline/f5-syslog/*.conf"
 - pipeline.id: generic-json
   path.config: "/usr/share/logstash/pipeline/generic-json"
 - pipeline.id: netflow

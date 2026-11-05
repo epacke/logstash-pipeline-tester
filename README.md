@@ -115,7 +115,7 @@ I have very limited time so I won't be able to act fast on any issue but it's al
 <p align="center"><img src="media/screenshot.png"/></p>
 
 # Credits
-* F5 Example pipeline copied (and slightly modified) from [here](https://github.com/OutsideIT/logstash_filter_f5)
+* The first version of the F5 pipeline was based on [logstash_filter_f5](https://github.com/OutsideIT/logstash_filter_f5)
 
 ## Icons/media
 https://www.svgrepo.com/svg/289194/log-wood
