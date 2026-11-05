@@ -1,0 +1,33 @@
+# Raw lines from /var/log/ltm on a lab BIG-IP 17.5.1.11 (2026-11-05), without the
+# <PRI> header that remote syslog adds. One line per message format.
+# Lines starting with # and blank lines are ignored by the tests.
+Nov  5 02:08:24 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 monitor status forced down. [ /Common/lpt_icmp: up ]  [ was up for 0hr:0min:47sec ]
+Nov  5 02:08:59 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 monitor status down. [ /Common/lpt_http: down; last error: /Common/lpt_http: No successful responses received before deadline. @2026/11/05 02:08:59.  ]  [ was up for 0hr:0min:27sec ]
+Nov  4 02:29:16 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/always_down-pool member /Common/down-01:7070 monitor status down. [ /Common/http: down; last error: /Common/http: No successful responses received before deadline. @2026/11/04 02:29:16.  ]  [ was unchecked for 0hr:3mins:49sec ]
+Nov  5 02:07:37 localhost.localdomain notice mcpd[5217]: 01070727:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 monitor status up. [ /Common/lpt_icmp: up ]  [ was unchecked for 0hr:0min:1sec ]
+Nov  5 02:08:09 localhost.localdomain notice mcpd[5217]: 01070639:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 session status forced disabled.
+Nov  5 02:08:24 localhost.localdomain notice mcpd[5217]: 01070807:5: Monitor /Common/lpt_icmp instance 192.0.2.1:0 has been disabled.
+Nov  5 02:08:31 localhost.localdomain notice mcpd[5217]: 01070807:5: Monitor /Common/lpt_icmp instance 192.0.2.1:0 has been enabled.
+Nov  4 02:29:16 bigip1 err tmm1[19781]: 01010028:3: No members available for pool /Common/always_down_02-pool
+Nov  5 02:08:32 bigip1 notice tmm3[19781]: 01010221:5: Pool /Common/lpt_pool now has available members
+Nov  5 02:08:24 bigip1 err tmm1[19781]: 01010028:3: Resuming log processing at this invocation; held 9 messages.
+Nov  4 02:29:16 bigip1 notice tmm[19781]: 01010028:3: Re-enabling general logging; held 24 messages.
+Nov  4 02:25:40 localhost.localdomain notice mcpd[5217]: 010713c2:5: Cumulative log rate exceeded!  Throttling all non-debug logs.
+Nov  4 02:25:13 localhost.localdomain warning mcpd[5217]: 01071859:4: Per-invocation log rate exceeded; throttling.
+Nov  5 02:08:24 localhost.localdomain notice mcpd[5217]: 010719e7:5: Virtual Address /Common/192.0.2.240 general status changed from GREEN to RED.
+Nov  5 02:08:24 localhost.localdomain notice mcpd[5217]: 010719e8:5: Virtual Address /Common/192.0.2.240 monitor status changed from UP to DOWN.
+Nov  5 02:07:42 localhost.localdomain notice mcpd[5217]: 01071681:5: SNMP_TRAP: Virtual /Common/lpt_vs has become available
+Nov  5 02:08:24 localhost.localdomain notice mcpd[5217]: 01071682:5: SNMP_TRAP: Virtual /Common/lpt_vs has become unavailable
+Nov  5 02:08:43 localhost.localdomain notice mcpd[5217]: 01071ba9:5: Virtual /Common/lpt_vs has become unchecked
+Nov  5 02:09:36 localhost.localdomain notice mcpd[5217]: 01070921:5: Virtual Server '/Common/lpt_vs' on partition 'Common' disabled by user 'root'.
+Nov  5 02:09:46 localhost.localdomain notice mcpd[5217]: 01070921:5: Virtual Server '/Common/lpt_vs' on partition 'Common' enabled by user 'root'.
+Nov  5 02:09:55 bigip1 info tmm1[19781]: Rule /Common/lpt_irule <HTTP_REQUEST>: lpt request /hello from 192.0.2.163
+Nov  5 02:09:55 bigip1 info tmm[19781]: Rule /Common/lpt_irule <HTTP_REQUEST>: lpt request /a?b=c from 192.0.2.163
+Nov  5 02:09:55 bigip1 err tmm3[19781]: 01220001:3: TCL error: /Common/lpt_irule <HTTP_REQUEST> - divide by zero     while executing "expr {1 / 0}"
+Nov  5 02:09:58 localhost.localdomain err mcpd[5217]: 01070827:3: User login disallowed: User (lptnouser) is not an administrator, does not have a UID of zero, and has not been assigned a role on a partition.
+Nov  3 23:38:12 localhost.localdomain warning tmsh[17158]: 01420013:4: [api-status-warning] sys/datastor is deprecated
+Nov  4 02:19:22 localhost.localdomain emerg overdog[1236]: 01140043:0: Ha feature software_update reboot requested.
+Nov  4 02:25:12 localhost.localdomain notice mcpd[5217]: 01071539:5: Mcpd is starting.  The BIG-IP version is 17.5.1.11.
+Nov  4 02:27:24 localhost.localdomain notice mcpd[5217]: 01b5004a:5: Link: 1.1 is UP
+Nov  4 02:24:04 localhost info systemd-journal[107]: Journal started
+Nov  4 02:24:17 localhost.localdomain info mprov:2480:[2480]: '/bin/mkdir -p /dev/mprov/tam'
