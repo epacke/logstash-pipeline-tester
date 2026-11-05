@@ -3,7 +3,9 @@
     "module": "commonjs",
     "target": "ES2020",
     "esModuleInterop": true,
-    "outDir": "build"
+    "outDir": "build",
+    "rootDir": "src",
+    "types": ["node"]
   },
   "include": [
     "src/**/*"
