@@ -39,7 +39,7 @@ describe('F5 syslog tests', () => {
 
     expect(syslog_pri).toEqual('131');
     expect(syslog_hostname).toEqual('bigip1');
-    expect(syslog_severity).toEqual('error');
+    expect(syslog_severity).toEqual('err');
     expect(syslog_timestamp).toEqual('Nov  4 02:29:16');
     expect(syslog_program).toEqual('tmm2');
     expect(syslog_pid).toEqual('19781');
