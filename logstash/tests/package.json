@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --runInBand",
-    "dev:test": "jest --watch --runInBand"
+    "dev:test": "jest --watch --runInBand",
+    "add-pri": "ts-node src/scripts/add-syslog-pri.ts"
   },
   "author": "",
   "license": "ISC",
