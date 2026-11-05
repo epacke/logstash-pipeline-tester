@@ -9,9 +9,9 @@ export async function ProcessLogLine(
   return new Promise<string> (async (resolve) => {
     const ws = await GetBackendConnection();
 
-    let data;
+    let data: string;
     ws.onmessage = function(evt) {
-      data = evt.data;
+      data = evt.data.toString();
       ws.close();
     };
 
@@ -26,13 +26,15 @@ export async function ProcessLogLine(
 }
 
 const GetBackendConnection = async () => {
-  return new Promise<WebSocket>( (resolve) => {
+  return new Promise<WebSocket>( (resolve, reject) => {
     let ws: WebSocket;
     try {
       ws = new WebSocket('ws://localhost:8080/api/v1/getLogstashOutput');
     } catch (err) {
       console.error('Unable to connect to the backend');
       console.log(err);
+      reject(err);
+      return;
     }
 
     ws.onopen = function() {
