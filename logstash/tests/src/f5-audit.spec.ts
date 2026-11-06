@@ -1,7 +1,7 @@
 /*
  Tests for the audit message parsers in the f5-syslog pipeline
  (logstash-config/pipeline/f5-syslog/filter.conf, audit section).
- Lines are from tests/fixtures/f5/audit.log.
+ Lines are from tests/fixtures/f5-syslog/audit.log.
  */
 
 import { sendF5 } from './helpers/f5';
