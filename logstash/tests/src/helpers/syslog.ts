@@ -54,3 +54,70 @@ export function addSyslogPri(line: string, facility: string | number = 'local0')
   }
   return `<${facilityCode(facility) * 8 + severity}>${line}`;
 }
+
+export interface RsyslogOptions {
+  /** Defaults to local0 */
+  facility?: string | number;
+  /** The BIG-IP timestamp has no year. Defaults to the current year. */
+  year?: number;
+  /** Fixed offset like +01:00. Takes precedence over timeZone. */
+  offset?: string;
+  /** IANA time zone the BIG-IP logs in. Defaults to this machine's. */
+  timeZone?: string;
+}
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// <133>Nov  5 02:08:32 ...
+const PRI_AND_F5_TIMESTAMP = /^(<\d{1,3}>)(\w{3}) +(\d{1,2}) (\d{2}):(\d{2}):(\d{2}) /;
+const OFFSET = /^[+-]\d{2}:\d{2}$/;
+
+// Offset of timeZone at the given instant, e.g. +01:00
+function offsetAt(instant: number, timeZone: string): string {
+  const name = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'longOffset' })
+    .formatToParts(new Date(instant))
+    .find((part) => part.type === 'timeZoneName')?.value ?? 'GMT';
+  // "GMT+01:00", or just "GMT" for UTC
+  return name === 'GMT' ? '+00:00' : name.slice(3);
+}
+
+function offsetMinutes(offset: string): number {
+  const sign = offset.startsWith('-') ? -1 : 1;
+  const [hours, minutes] = offset.slice(1).split(':').map(Number);
+  return sign * (hours * 60 + minutes);
+}
+
+/**
+ * Converts a raw F5 log line to the format rsyslog writes with the template
+ * in pipeline/f5-rsyslog/README.md: <PRI> followed by an RFC 3339 timestamp.
+ * Adds the <PRI> like addSyslogPri if it's missing.
+ * Throws if the line has no BIG-IP timestamp or the severity can't be determined.
+ * @param line
+ * @param options
+ */
+export function toRsyslogFormat(line: string, options: RsyslogOptions = {}): string {
+  const { facility = 'local0', year = new Date().getFullYear(), offset, timeZone } = options;
+  if (offset !== undefined && !OFFSET.test(offset)) {
+    throw new Error(`Invalid offset, expected e.g. +01:00: ${offset}`);
+  }
+  const zone = timeZone ?? Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  const withPri = addSyslogPri(line, facility);
+  const match = withPri.match(PRI_AND_F5_TIMESTAMP);
+  const month = match ? MONTHS.indexOf(match[2]) : -1;
+  if (!match || month < 0) {
+    throw new Error(`No BIG-IP timestamp in line: ${line}`);
+  }
+  const [prefix, pri, , day, hh, mm, ss] = match;
+
+  let lineOffset = offset;
+  if (lineOffset === undefined) {
+    // The timestamp is wall clock time in zone. Look up the offset at that
+    // time, then again at the corrected instant in case it crosses a DST change.
+    const wallClock = Date.UTC(year, month, Number(day), Number(hh), Number(mm), Number(ss));
+    const guess = offsetAt(wallClock, zone);
+    lineOffset = offsetAt(wallClock - offsetMinutes(guess) * 60000, zone);
+  }
+
+  const date = `${year}-${String(month + 1).padStart(2, '0')}-${day.padStart(2, '0')}`;
+  return `${pri}${date}T${hh}:${mm}:${ss}${lineOffset} ${withPri.slice(prefix.length)}`;
+}
