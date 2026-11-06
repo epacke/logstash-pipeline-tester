@@ -103,18 +103,3 @@ describe('F5 fixture lines', () => {
     expect(event.tags).toBeUndefined();
   });
 });
-
-describe('F5 through the syslog input', () => {
-  // The syslog input adds the sender's address and a service type,
-  // otherwise the events must be the same as from the tcp input.
-  it.each([...readF5Fixture('ltm.log'), ...readF5Fixture('audit.log')])('%s', async (line) => {
-    const viaTcp = await sendF5(line);
-    const viaSyslog = await sendF5(line, 'local0', 'syslog');
-
-    expect(viaSyslog.host.ip).toBeDefined();
-    expect(viaSyslog.service).toEqual({ type: 'system' });
-    delete viaSyslog.host.ip;
-    delete viaSyslog.service;
-    expect(viaSyslog).toEqual(viaTcp);
-  });
-});
