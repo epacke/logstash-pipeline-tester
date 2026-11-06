@@ -4,6 +4,8 @@
 
 - pipeline.id: f5-syslog
   path.config: "/usr/share/logstash/pipeline/f5-syslog/*.conf"
+- pipeline.id: f5-rsyslog
+  path.config: "/usr/share/logstash/pipeline/f5-rsyslog/*.conf"
 - pipeline.id: generic-json
   path.config: "/usr/share/logstash/pipeline/generic-json"
 - pipeline.id: netflow

@@ -18,9 +18,6 @@ fields, in detail for `/var/log/ltm` and `/var/log/audit`. Developed against BIG
 
 * mcpd audit lines end at the first newline in the object data (e.g. iRule definitions). Those
   lines have no `f5.audit.status` or `event.outcome`.
-* With the `syslog` input, the header is parsed from `event.original`, so the input needs ECS
-  compatibility (the default since Logstash 8). The input also adds `host.ip` (the sender) and
-  `service.type: system`.
 * The TCP input splits on newlines. BIG-IP sends remote syslog over UDP by default.
 * `process.name` for `mprov` is logged as `mprov:2480:`.
 * `boot_marker` lines in local log files use an ISO timestamp and aren't parsed.
