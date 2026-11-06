@@ -1,6 +1,6 @@
 /*
  Tests for the audit message parsers in the f5-syslog pipeline
- (logstash-config/pipeline/f5-syslog/40-audit.conf).
+ (logstash-config/pipeline/f5-syslog/filter.conf, audit section).
  Lines are from tests/fixtures/f5/audit.log.
  */
 
