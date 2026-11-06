@@ -1,7 +1,7 @@
 /*
  Tests for the ltm message parsers in the f5-syslog pipeline
  (logstash-config/pipeline/f5-syslog/filter.conf, log throttling and ltm sections).
- Lines are from tests/fixtures/f5/ltm.log.
+ Lines are from tests/fixtures/f5-syslog/ltm.log.
  */
 
 import { sendF5 } from './helpers/f5';

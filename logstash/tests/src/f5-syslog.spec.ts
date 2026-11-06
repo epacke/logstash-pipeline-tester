@@ -1,7 +1,7 @@
 /*
  Tests for the syslog header part of the f5-syslog pipeline
  (logstash-config/pipeline/f5-syslog/filter.conf, syslog header section) and a sweep
- over all fixture lines in tests/fixtures/f5.
+ over all fixture lines in tests/fixtures/f5-syslog.
  */
 
 import { readF5Fixture, sendF5 } from './helpers/f5';
