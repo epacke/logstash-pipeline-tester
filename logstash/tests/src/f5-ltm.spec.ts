@@ -1,6 +1,6 @@
 /*
  Tests for the ltm message parsers in the f5-syslog pipeline
- (logstash-config/pipeline/f5-syslog/20-log-throttling.conf and 30-ltm.conf).
+ (logstash-config/pipeline/f5-syslog/filter.conf, log throttling and ltm sections).
  Lines are from tests/fixtures/f5/ltm.log.
  */
 

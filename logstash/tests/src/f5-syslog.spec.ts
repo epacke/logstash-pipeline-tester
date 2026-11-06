@@ -1,6 +1,6 @@
 /*
  Tests for the syslog header part of the f5-syslog pipeline
- (logstash-config/pipeline/f5-syslog/10-syslog-header.conf) and a sweep
+ (logstash-config/pipeline/f5-syslog/filter.conf, syslog header section) and a sweep
  over all fixture lines in tests/fixtures/f5.
  */
 
