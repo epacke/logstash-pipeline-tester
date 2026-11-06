@@ -54,6 +54,19 @@ jobs:
       - name: Run tests
         working-directory: logstash/tests
         run: npm run test
+      - name: Container diagnostics
+        if: failure()
+        run: |
+          echo "::group::Logstash API"
+          curl -s -i localhost:9600/ || true
+          echo
+          echo "::endgroup::"
+          echo "::group::Logstash pipeline stats"
+          curl -s 'localhost:9600/_node/stats/pipelines?pretty' || true
+          echo "::endgroup::"
+          echo "::group::Container logs"
+          docker compose -f "docker-compose.yml" logs --no-color || true
+          echo "::endgroup::"
       - name: Stop containers
         if: always()
         run: docker compose -f "docker-compose.yml" down
