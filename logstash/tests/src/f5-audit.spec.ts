@@ -11,9 +11,9 @@ describe('F5 audit configuration changes', () => {
     const event = await sendF5('Nov  5 02:07:42 localhost.localdomain notice mcpd[5217]: 01070417:5: AUDIT - client tmsh, tmsh-pid-15445, user root - transaction #365983-2 - object 0 - create { virtual_server { virtual_server_name "/Common/lpt_vs" virtual_server_va_name "192.0.2.240" virtual_server_port 80 virtual_server_ip_proto 6 virtual_server_default_pool "lpt_pool" virtual_server_source_address_translation_type 3 } } [Status=Command OK]');
 
     expect(event).toMatchObject({
-      event: { dataset: 'f5.audit', action: 'configuration-change', category: 'configuration', type: 'creation', outcome: 'success' },
+      event: { dataset: 'f5_bigip.audit', action: 'configuration-change', category: 'configuration', type: 'creation', outcome: 'success' },
       user: { name: 'root' },
-      f5: {
+      f5_bigip: {
         audit: {
           client: 'tmsh',
           client_pid: 15445,
@@ -34,9 +34,9 @@ describe('F5 audit configuration changes', () => {
     expect(event).toMatchObject({
       event: { type: 'change', outcome: 'success' },
       user: { name: 'admin' },
-      f5: { audit: { client: 'tmui', operation: 'modify', object_type: 'software_desired', object_name: 'HD1.2' } },
+      f5_bigip: { audit: { client: 'tmui', operation: 'modify', object_type: 'software_desired', object_name: 'HD1.2' } },
     });
-    expect(event.f5.audit.client_pid).toBeUndefined();
+    expect(event.f5_bigip.audit.client_pid).toBeUndefined();
   });
 
   it('Parses a delete', async () => {
@@ -44,7 +44,7 @@ describe('F5 audit configuration changes', () => {
 
     expect(event).toMatchObject({
       event: { type: 'deletion' },
-      f5: { audit: { operation: 'obj_delete', object_type: 'pool', object_name: '/Common/lpt_pool' } },
+      f5_bigip: { audit: { operation: 'obj_delete', object_type: 'pool', object_name: '/Common/lpt_pool' } },
     });
   });
 
@@ -54,7 +54,7 @@ describe('F5 audit configuration changes', () => {
     expect(event).toMatchObject({
       event: { type: 'creation' },
       user: { name: 'Unknown' },
-      f5: { audit: { client: 'Unknown', operation: 'create_if', object_type: 'db_variable', object_name: 'version.edition' } },
+      f5_bigip: { audit: { client: 'Unknown', operation: 'create_if', object_type: 'db_variable', object_name: 'version.edition' } },
     });
   });
 
@@ -67,7 +67,7 @@ describe('F5 audit configuration changes', () => {
   ])('Reads the object name of a %s', async (objectType, objectName, line) => {
     const event = await sendF5(line);
 
-    expect(event.f5.audit).toMatchObject({ object_type: objectType, object_name: objectName });
+    expect(event.f5_bigip.audit).toMatchObject({ object_type: objectType, object_name: objectName });
   });
 
   it('Has no object name for objects keyed on a number', async () => {
@@ -76,9 +76,9 @@ describe('F5 audit configuration changes', () => {
     expect(event).toMatchObject({
       event: { action: 'configuration-change', type: 'change' },
       user: { name: 'tmrouted' },
-      f5: { audit: { operation: 'modify_if', object_type: 'rp_current_status' } },
+      f5_bigip: { audit: { operation: 'modify_if', object_type: 'rp_current_status' } },
     });
-    expect(event.f5.audit.object_name).toBeUndefined();
+    expect(event.f5_bigip.audit.object_name).toBeUndefined();
   });
 
   it('Parses lines that were cut at a newline in the iRule definition', async () => {
@@ -86,10 +86,10 @@ describe('F5 audit configuration changes', () => {
 
     expect(event).toMatchObject({
       event: { action: 'configuration-change', type: 'creation' },
-      f5: { audit: { object_type: 'rule', object_name: '/Common/lpt_irule', object: '{ rule { rule_name "/Common/lpt_irule" rule_definition "when HTTP_REQUEST {' } },
+      f5_bigip: { audit: { object_type: 'rule', object_name: '/Common/lpt_irule', object: '{ rule { rule_name "/Common/lpt_irule" rule_definition "when HTTP_REQUEST {' } },
     });
     // No [Status=...] means no outcome
-    expect(event.f5.audit.status).toBeUndefined();
+    expect(event.f5_bigip.audit.status).toBeUndefined();
     expect(event.event.outcome).toBeUndefined();
   });
 });
@@ -102,7 +102,7 @@ describe('F5 audit tmsh commands', () => {
       event: { action: 'tmsh-command', outcome: 'success' },
       process: { name: 'tmsh', pid: 15714 },
       user: { name: 'root' },
-      f5: { audit: { folder: '/Common', module: 'tmos', status: 'Command OK', command: 'modify ltm virtual lpt_vs disabled' } },
+      f5_bigip: { audit: { folder: '/Common', module: 'tmos', status: 'Command OK', command: 'modify ltm virtual lpt_vs disabled' } },
     });
   });
 
@@ -111,7 +111,7 @@ describe('F5 audit tmsh commands', () => {
 
     expect(event).toMatchObject({
       event: { action: 'tmsh-command', outcome: 'failure' },
-      f5: { audit: { status: 'Syntax Error: a volume must be specified', command: 'install /sys software image BIGIP-17.5.1.11-0.0.12.iso create-volume' } },
+      f5_bigip: { audit: { status: 'Syntax Error: a volume must be specified', command: 'install /sys software image BIGIP-17.5.1.11-0.0.12.iso create-volume' } },
     });
   });
 });
@@ -124,9 +124,9 @@ describe('F5 audit logins', () => {
       event: { action: 'session-start', category: 'authentication', type: 'start', outcome: 'success' },
       user: { name: 'root', roles: 'Administrator' },
       source: { address: '192.0.2.163', ip: '192.0.2.163' },
-      f5: { audit: { service: 'sshd', partition: 'All', tty: 'ssh', login_attempts: 1, session: { start: '2026-11-03T07:34:30.000Z' } } },
+      f5_bigip: { audit: { service: 'sshd', partition: 'All', tty: 'ssh', login_attempts: 1, session: { start: '2026-11-03T07:34:30.000Z' } } },
     });
-    expect(event.f5.audit.session.end).toBeUndefined();
+    expect(event.f5_bigip.audit.session.end).toBeUndefined();
   });
 
   it('Parses an ssh session end', async () => {
@@ -134,7 +134,7 @@ describe('F5 audit logins', () => {
 
     expect(event).toMatchObject({
       event: { action: 'session-end', type: 'end', outcome: 'success' },
-      f5: { audit: { session: { start: '2026-11-03T07:34:30.000Z', end: '2026-11-03T07:44:51.000Z' } } },
+      f5_bigip: { audit: { session: { start: '2026-11-03T07:34:30.000Z', end: '2026-11-03T07:44:51.000Z' } } },
     });
   });
 
@@ -142,7 +142,7 @@ describe('F5 audit logins', () => {
     const event = await sendF5('Nov  4 04:00:50 localhost.localdomain info sshd(pam_audit)[24497]: 01070417:6: AUDIT - user root - RAW: sshd(pam_audit): user=root(root) partition=[All] level=Administrator tty=ssh host=192.0.2.163 start="Wed Nov  4 02:30:28 2026" end="Wed Nov  4 04:00:50 2026".');
 
     expect(event.event.action).toEqual('session-end');
-    expect(event.f5.audit.login_attempts).toBeUndefined();
+    expect(event.f5_bigip.audit.login_attempts).toBeUndefined();
   });
 
   it('Parses an iControl REST login', async () => {
@@ -151,7 +151,7 @@ describe('F5 audit logins', () => {
     expect(event).toMatchObject({
       user: { name: 'bigipreport', roles: 'Auditor' },
       source: { ip: '198.51.100.11' },
-      f5: { audit: { service: 'rest', tty: '(unknown)' } },
+      f5_bigip: { audit: { service: 'rest', tty: '(unknown)' } },
     });
   });
 
@@ -161,7 +161,7 @@ describe('F5 audit logins', () => {
     expect(event).toMatchObject({
       event: { action: 'session-start' },
       user: { name: 'admin' },
-      f5: { audit: { service: 'httpd', tty: '/bin/false' } },
+      f5_bigip: { audit: { service: 'httpd', tty: '/bin/false' } },
     });
   });
 
@@ -172,7 +172,7 @@ describe('F5 audit logins', () => {
       event: { action: 'login-failed', category: 'authentication', type: 'start', outcome: 'failure' },
       user: { name: 'admin' },
       source: { ip: '192.0.2.163' },
-      f5: { audit: { service: 'httpd', login_attempts: 1, session: { start: '2026-11-03T07:36:44.000Z', end: '2026-11-03T07:36:46.000Z' } } },
+      f5_bigip: { audit: { service: 'httpd', login_attempts: 1, session: { start: '2026-11-03T07:36:44.000Z', end: '2026-11-03T07:36:46.000Z' } } },
     });
   });
 });
@@ -181,7 +181,7 @@ describe('F5 audit messages without a parser', () => {
   it('Keeps only the header fields', async () => {
     const event = await sendF5('Nov  4 02:25:40 localhost.localdomain notice devmgmtd[5562]: 015a0000:5: AUDIT : Update CA bundle requested');
 
-    expect(event.event).toMatchObject({ code: '015a0000', dataset: 'f5.audit' });
+    expect(event.event).toMatchObject({ code: '015a0000', dataset: 'f5_bigip.audit' });
     expect(event.event.action).toBeUndefined();
     expect(event.tags).toBeUndefined();
   });

@@ -31,7 +31,7 @@ fixtures, so either can be used or changed without the other.
 ## Known limitations
 
 * mcpd audit lines end at the first newline in the object data (e.g. iRule definitions). Those
-  lines have no `f5.audit.status` or `event.outcome`.
+  lines have no `f5_bigip.audit.status` or `event.outcome`.
 * The TCP input splits on newlines. BIG-IP sends remote syslog over UDP by default.
 * `process.name` for `mprov` is logged as `mprov:2480:`.
 * `boot_marker` lines in local log files use an ISO timestamp and aren't parsed.

@@ -36,5 +36,5 @@ fixtures, so either can be used or changed without the other.
 ## Known limitations
 
 * mcpd audit lines end at the first newline in the object data (e.g. iRule definitions). Those
-  lines have no `f5.audit.status` or `event.outcome`.
+  lines have no `f5_bigip.audit.status` or `event.outcome`.
 * `process.name` for `mprov` is logged as `mprov:2480:`.

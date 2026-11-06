@@ -23,7 +23,7 @@ describe('F5 rsyslog header', () => {
       process: { name: 'tmm2', pid: 19781 },
       event: {
         code: '01010028',
-        dataset: 'f5.ltm',
+        dataset: 'f5_bigip.ltm',
         original: '<131>2026-11-04T02:29:16+01:00 bigip1 err tmm2[19781]: 01010028:3: No members available for pool /Common/ipv6pool',
       },
       observer: { vendor: 'F5', product: 'BIG-IP' },
@@ -60,13 +60,13 @@ describe('F5 rsyslog header', () => {
     const event = await sendF5Rsyslog('<131>2026-11-04T02:29:16+01:00 slot1/bigip1 err tmm2[19781]: 01010028:3: No members available for pool /Common/ipv6pool');
 
     expect(event.host.hostname).toEqual('bigip1');
-    expect(event.f5.slot).toEqual('1');
+    expect(event.f5_bigip.slot).toEqual('1');
   });
 
   it('Puts AUDIT messages on local0 in the audit dataset', async () => {
     const event = await sendF5Rsyslog('<133>2026-11-04T02:27:24+01:00 bigip1 notice tmm2[19781]: 013e000d:5: AUDIT - The DB variable tcpdump.sslprovider has been disabled.');
 
-    expect(event.event.dataset).toEqual('f5.audit');
+    expect(event.event.dataset).toEqual('f5_bigip.audit');
   });
 
   it('Sets no dataset for other facilities', async () => {
@@ -117,14 +117,14 @@ describe('F5 rsyslog fixture lines', () => {
   it.each(readF5RsyslogFixture('ltm.log'))('ltm: %s', async (line) => {
     const event = await sendF5Rsyslog(line);
 
-    expect(event.event.dataset).toEqual('f5.ltm');
+    expect(event.event.dataset).toEqual('f5_bigip.ltm');
     expect(event.tags).toBeUndefined();
   });
 
   it.each(readF5RsyslogFixture('audit.log'))('audit: %s', async (line) => {
     const event = await sendF5Rsyslog(line);
 
-    expect(event.event.dataset).toEqual('f5.audit');
+    expect(event.event.dataset).toEqual('f5_bigip.audit');
     expect(event.tags).toBeUndefined();
   });
 });
