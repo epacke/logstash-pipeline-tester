@@ -13,10 +13,10 @@ describe('F5 log throttling', () => {
     expect(event).toMatchObject({
       // The message ID is the one of the throttled message
       event: { code: '01010028', action: 'log-throttling-ended' },
-      f5: { log_throttling: { held_messages: 9 } },
+      f5_bigip: { log_throttling: { held_messages: 9 } },
     });
     // Not mistaken for the "No members available for pool" message
-    expect(event.f5.pool).toBeUndefined();
+    expect(event.f5_bigip.pool).toBeUndefined();
     expect(event.tags).toBeUndefined();
   });
 
@@ -25,7 +25,7 @@ describe('F5 log throttling', () => {
 
     expect(event).toMatchObject({
       event: { action: 'log-throttling-ended' },
-      f5: { log_throttling: { held_messages: 24 } },
+      f5_bigip: { log_throttling: { held_messages: 24 } },
     });
   });
 
@@ -42,7 +42,7 @@ describe('F5 ltm pools', () => {
 
     expect(event).toMatchObject({
       event: { code: '01070638', action: 'pool-member-status-change' },
-      f5: {
+      f5_bigip: {
         pool: { name: '/Common/lpt_pool', member: { name: '/Common/192.0.2.1', port: 80 } },
         status: { type: 'monitor', current: 'down', previous: 'up', previous_duration: '0hr:0min:27sec' },
         monitor: { name: '/Common/lpt_http', status: 'down' },
@@ -54,7 +54,7 @@ describe('F5 ltm pools', () => {
   it('Parses monitor status forced down', async () => {
     const event = await sendF5('Nov  5 02:08:24 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 monitor status forced down. [ /Common/lpt_icmp: up ]  [ was up for 0hr:0min:47sec ]');
 
-    expect(event.f5).toMatchObject({
+    expect(event.f5_bigip).toMatchObject({
       status: { type: 'monitor', current: 'forced down', previous: 'up' },
       monitor: { name: '/Common/lpt_icmp', status: 'up' },
     });
@@ -66,14 +66,14 @@ describe('F5 ltm pools', () => {
 
     expect(event).toMatchObject({
       event: { code: '01070727', action: 'pool-member-status-change' },
-      f5: { status: { type: 'monitor', current: 'up', previous: 'unchecked', previous_duration: '0hr:0min:1sec' } },
+      f5_bigip: { status: { type: 'monitor', current: 'up', previous: 'unchecked', previous_duration: '0hr:0min:1sec' } },
     });
   });
 
   it('Parses members named after a node', async () => {
     const event = await sendF5('Nov  4 02:29:16 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/always_down-pool member /Common/down-01:7070 monitor status down. [ /Common/http: down; last error: /Common/http: No successful responses received before deadline. @2026/11/04 02:29:16.  ]  [ was unchecked for 0hr:3mins:49sec ]');
 
-    expect(event.f5.pool).toEqual({ name: '/Common/always_down-pool', member: { name: '/Common/down-01', port: 7070 } });
+    expect(event.f5_bigip.pool).toEqual({ name: '/Common/always_down-pool', member: { name: '/Common/down-01', port: 7070 } });
   });
 
   it('Parses session status', async () => {
@@ -81,7 +81,7 @@ describe('F5 ltm pools', () => {
 
     expect(event).toMatchObject({
       event: { code: '01070639', action: 'pool-member-status-change' },
-      f5: {
+      f5_bigip: {
         pool: { name: '/Common/lpt_pool', member: { name: '/Common/192.0.2.1', port: 80 } },
         status: { type: 'session', current: 'forced disabled' },
       },
@@ -93,7 +93,7 @@ describe('F5 ltm pools', () => {
 
     expect(event).toMatchObject({
       event: { action: 'pool-no-members-available' },
-      f5: { pool: { name: '/Common/always_down_02-pool' } },
+      f5_bigip: { pool: { name: '/Common/always_down_02-pool' } },
     });
   });
 
@@ -102,7 +102,7 @@ describe('F5 ltm pools', () => {
 
     expect(event).toMatchObject({
       event: { action: 'pool-members-available' },
-      f5: { pool: { name: '/Common/lpt_pool' } },
+      f5_bigip: { pool: { name: '/Common/lpt_pool' } },
     });
   });
 });
@@ -113,7 +113,7 @@ describe('F5 ltm monitors', () => {
 
     expect(event).toMatchObject({
       event: { action: 'monitor-instance-status-change' },
-      f5: {
+      f5_bigip: {
         monitor: { name: '/Common/lpt_icmp', instance: { address: '192.0.2.1', port: 0 } },
         status: { current: 'disabled' },
       },
@@ -127,14 +127,14 @@ describe('F5 ltm virtual servers and addresses', () => {
 
     expect(event).toMatchObject({
       event: { action: 'virtual-server-status-change' },
-      f5: { virtual_server: { name: '/Common/lpt_vs' }, status: { current: 'unavailable' } },
+      f5_bigip: { virtual_server: { name: '/Common/lpt_vs' }, status: { current: 'unavailable' } },
     });
   });
 
   it('Parses virtual server unchecked', async () => {
     const event = await sendF5('Nov  5 02:08:43 localhost.localdomain notice mcpd[5217]: 01071ba9:5: Virtual /Common/lpt_vs has become unchecked');
 
-    expect(event.f5).toMatchObject({ virtual_server: { name: '/Common/lpt_vs' }, status: { current: 'unchecked' } });
+    expect(event.f5_bigip).toMatchObject({ virtual_server: { name: '/Common/lpt_vs' }, status: { current: 'unchecked' } });
   });
 
   it('Parses virtual server disabled by user', async () => {
@@ -143,7 +143,7 @@ describe('F5 ltm virtual servers and addresses', () => {
     expect(event).toMatchObject({
       event: { action: 'virtual-server-enabled-change' },
       user: { name: 'root' },
-      f5: { virtual_server: { name: '/Common/lpt_vs' }, partition: 'Common', status: { current: 'disabled' } },
+      f5_bigip: { virtual_server: { name: '/Common/lpt_vs' }, partition: 'Common', status: { current: 'disabled' } },
     });
   });
 
@@ -152,7 +152,7 @@ describe('F5 ltm virtual servers and addresses', () => {
 
     expect(event).toMatchObject({
       event: { action: 'virtual-address-status-change' },
-      f5: {
+      f5_bigip: {
         virtual_address: { name: '/Common/192.0.2.240' },
         status: { type: 'general', previous: 'GREEN', current: 'RED' },
       },
@@ -166,7 +166,7 @@ describe('F5 ltm iRules', () => {
 
     expect(event).toMatchObject({
       event: { action: 'irule-log' },
-      f5: { irule: { name: '/Common/lpt_irule', event: 'HTTP_REQUEST', log_message: 'lpt request /a?b=c from 192.0.2.163' } },
+      f5_bigip: { irule: { name: '/Common/lpt_irule', event: 'HTTP_REQUEST', log_message: 'lpt request /a?b=c from 192.0.2.163' } },
     });
   });
 
@@ -175,7 +175,7 @@ describe('F5 ltm iRules', () => {
 
     expect(event).toMatchObject({
       event: { action: 'irule-tcl-error' },
-      f5: { irule: { name: '/Common/lpt_irule', event: 'HTTP_REQUEST' } },
+      f5_bigip: { irule: { name: '/Common/lpt_irule', event: 'HTTP_REQUEST' } },
       error: { message: 'divide by zero     while executing "expr {1 / 0}"' },
     });
   });
@@ -203,7 +203,7 @@ describe('F5 ltm messages without a parser', () => {
 
     expect(event.event.code).toEqual('01b5004a');
     expect(event.event.action).toBeUndefined();
-    expect(event.f5).toBeUndefined();
+    expect(event.f5_bigip).toBeUndefined();
     expect(event.tags).toBeUndefined();
   });
 });
