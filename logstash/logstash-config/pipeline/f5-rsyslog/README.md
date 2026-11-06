@@ -10,6 +10,19 @@ template(name="F5FileFormat" type="string"
   string="<%PRI%>%TIMESTAMP:::date-rfc3339% %HOSTNAME% %syslogtag%%msg:::sp-if-no-1st-sp%%msg:::drop-last-lf%\n")
 ```
 
+## Variants
+
+Organizations ingest BIG-IP logs in different ways, and the format of the line that reaches
+Logstash depends on the path it takes. This repository has two examples:
+
+* [`f5-syslog`](../f5-syslog/README.md): remote syslog straight from the BIG-IP. Lines start with
+  `<PRI>` and the BIG-IP's own timestamp, which has no year or time zone.
+* `f5-rsyslog` (this one): relayed through an rsyslog server that writes the lines to a file, from
+  where they are shipped by e.g. Filebeat. Lines start with `<PRI>` and an RFC 3339 timestamp.
+
+Apart from the timestamp, both parse the same way. They have separate configuration, tests and
+fixtures, so either can be used or changed without the other.
+
 ## Troubleshooting
 
 * `_f5_header_parse_failure` tag: the line doesn't look like BIG-IP syslog written with the template

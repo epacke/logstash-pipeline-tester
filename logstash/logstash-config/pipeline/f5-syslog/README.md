@@ -3,6 +3,20 @@
 Parses remote syslog from F5 BIG-IP into [ECS](https://www.elastic.co/guide/en/ecs/current/index.html)
 fields, in detail for `/var/log/ltm` and `/var/log/audit`. Developed against BIG-IP 17.5.1.11.
 
+## Variants
+
+Organizations ingest BIG-IP logs in different ways, and the format of the line that reaches
+Logstash depends on the path it takes. This repository has two examples:
+
+* `f5-syslog` (this one): remote syslog straight from the BIG-IP. Lines start with `<PRI>` and the
+  BIG-IP's own timestamp, which has no year or time zone.
+* [`f5-rsyslog`](../f5-rsyslog/README.md): relayed through an rsyslog server that writes the lines
+  to a file, from where they are shipped by e.g. Filebeat. Lines start with `<PRI>` and an RFC 3339
+  timestamp.
+
+Apart from the timestamp, both parse the same way. They have separate configuration, tests and
+fixtures, so either can be used or changed without the other.
+
 ## Troubleshooting
 
 * `_f5_header_parse_failure` tag: the line doesn't look like BIG-IP syslog. Nothing else is parsed.
