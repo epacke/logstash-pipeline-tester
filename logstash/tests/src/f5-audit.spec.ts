@@ -11,7 +11,7 @@ describe('F5 audit configuration changes', () => {
     const event = await sendF5('Nov  5 02:07:42 localhost.localdomain notice mcpd[5217]: 01070417:5: AUDIT - client tmsh, tmsh-pid-15445, user root - transaction #365983-2 - object 0 - create { virtual_server { virtual_server_name "/Common/lpt_vs" virtual_server_va_name "192.0.2.240" virtual_server_port 80 virtual_server_ip_proto 6 virtual_server_default_pool "lpt_pool" virtual_server_source_address_translation_type 3 } } [Status=Command OK]');
 
     expect(event).toMatchObject({
-      event: { dataset: 'f5_bigip.audit', action: 'configuration-change', category: 'configuration', type: 'creation', outcome: 'success' },
+      event: { dataset: 'f5_bigip.audit', action: 'configuration-change', category: ['configuration'], type: ['creation'], outcome: 'success' },
       user: { name: 'root' },
       f5_bigip: {
         audit: {
@@ -32,7 +32,7 @@ describe('F5 audit configuration changes', () => {
     const event = await sendF5('Nov  4 02:19:20 localhost.localdomain notice mcpd[7025]: 01070417:5: AUDIT - client tmui, user admin - transaction #1914467-2 - object 0 - modify { software_desired { software_desired_volume "HD1.2" software_desired_active 1 } } [Status=Command OK]');
 
     expect(event).toMatchObject({
-      event: { type: 'change', outcome: 'success' },
+      event: { type: ['change'], outcome: 'success' },
       user: { name: 'admin' },
       f5_bigip: { audit: { client: 'tmui', operation: 'modify', object_type: 'software_desired', object_name: 'HD1.2' } },
     });
@@ -43,7 +43,7 @@ describe('F5 audit configuration changes', () => {
     const event = await sendF5('Nov  5 02:10:03 localhost.localdomain notice mcpd[5217]: 01070417:5: AUDIT - client tmsh, tmsh-pid-15937, user root - transaction #366677-2 - object 0 - obj_delete { pool { pool_name "/Common/lpt_pool" } } [Status=Command OK]');
 
     expect(event).toMatchObject({
-      event: { type: 'deletion' },
+      event: { type: ['deletion'] },
       f5_bigip: { audit: { operation: 'obj_delete', object_type: 'pool', object_name: '/Common/lpt_pool' } },
     });
   });
@@ -52,7 +52,7 @@ describe('F5 audit configuration changes', () => {
     const event = await sendF5('Nov  4 02:25:13 localhost.localdomain notice mcpd[5217]: 01070417:5: AUDIT - client Unknown, user Unknown - transaction #11-1 - object 0 - create_if { db_variable { db_variable_name "version.edition" db_variable_value "<none>" db_variable_sync_type "private_internal" db_variable_data_type "string" db_variable_display_name "Version.Edition" } } [Status=Command OK]');
 
     expect(event).toMatchObject({
-      event: { type: 'creation' },
+      event: { type: ['creation'] },
       user: { name: 'Unknown' },
       f5_bigip: { audit: { client: 'Unknown', operation: 'create_if', object_type: 'db_variable', object_name: 'version.edition' } },
     });
@@ -74,7 +74,7 @@ describe('F5 audit configuration changes', () => {
     const event = await sendF5('Nov  4 02:28:59 localhost.localdomain notice mcpd[5217]: 01070417:5: AUDIT - client Unknown, user tmrouted - transaction #11063-1 - object 0 - modify_if { rp_current_status { rp_current_status_slot_id 0 rp_current_status_state 3 } } [Status=Command OK]');
 
     expect(event).toMatchObject({
-      event: { action: 'configuration-change', type: 'change' },
+      event: { action: 'configuration-change', type: ['change'] },
       user: { name: 'tmrouted' },
       f5_bigip: { audit: { operation: 'modify_if', object_type: 'rp_current_status' } },
     });
@@ -85,7 +85,7 @@ describe('F5 audit configuration changes', () => {
     const event = await sendF5('Nov  5 02:07:41 localhost.localdomain notice mcpd[5217]: 01070417:5: AUDIT - client tmsh, tmsh-pid-15430, user root - transaction #365965-2 - object 0 - create { rule { rule_name "/Common/lpt_irule" rule_definition "when HTTP_REQUEST {');
 
     expect(event).toMatchObject({
-      event: { action: 'configuration-change', type: 'creation' },
+      event: { action: 'configuration-change', type: ['creation'] },
       f5_bigip: { audit: { object_type: 'rule', object_name: '/Common/lpt_irule', object: '{ rule { rule_name "/Common/lpt_irule" rule_definition "when HTTP_REQUEST {' } },
     });
     // No [Status=...] means no outcome
@@ -121,7 +121,7 @@ describe('F5 audit logins', () => {
     const event = await sendF5('Nov  3 07:34:30 localhost.localdomain info sshd(pam_audit)[10545]: 01070417:6: AUDIT - user root - RAW: sshd(pam_audit): user=root(root) partition=[All] level=Administrator tty=ssh host=192.0.2.163 attempts=1 start="Tue Nov  3 07:34:30 2026".');
 
     expect(event).toMatchObject({
-      event: { action: 'session-start', category: 'authentication', type: 'start', outcome: 'success' },
+      event: { action: 'session-start', category: ['authentication'], type: ['start'], outcome: 'success' },
       user: { name: 'root', roles: 'Administrator' },
       source: { address: '192.0.2.163', ip: '192.0.2.163' },
       f5_bigip: { audit: { service: 'sshd', partition: 'All', tty: 'ssh', login_attempts: 1, session: { start: '2026-11-03T07:34:30.000Z' } } },
@@ -133,7 +133,7 @@ describe('F5 audit logins', () => {
     const event = await sendF5('Nov  3 07:44:51 localhost.localdomain info sshd(pam_audit)[10545]: 01070417:6: AUDIT - user root - RAW: sshd(pam_audit): user=root(root) partition=[All] level=Administrator tty=ssh host=192.0.2.163 attempts=1 start="Tue Nov  3 07:34:30 2026" end="Tue Nov  3 07:44:51 2026".');
 
     expect(event).toMatchObject({
-      event: { action: 'session-end', type: 'end', outcome: 'success' },
+      event: { action: 'session-end', type: ['end'], outcome: 'success' },
       f5_bigip: { audit: { session: { start: '2026-11-03T07:34:30.000Z', end: '2026-11-03T07:44:51.000Z' } } },
     });
   });
@@ -169,7 +169,7 @@ describe('F5 audit logins', () => {
     const event = await sendF5('Nov  3 07:36:46 localhost.localdomain info httpd(pam_audit)[28009]: 01070417:6: AUDIT - user admin - RAW: httpd(pam_audit): User=admin tty=(unknown) host=192.0.2.163 failed to login after 1 attempts (start="Tue Nov  3 07:36:44 2026" end="Tue Nov  3 07:36:46 2026").');
 
     expect(event).toMatchObject({
-      event: { action: 'login-failed', category: 'authentication', type: 'start', outcome: 'failure' },
+      event: { action: 'login-failed', category: ['authentication'], type: ['start'], outcome: 'failure' },
       user: { name: 'admin' },
       source: { ip: '192.0.2.163' },
       f5_bigip: { audit: { service: 'httpd', login_attempts: 1, session: { start: '2026-11-03T07:36:44.000Z', end: '2026-11-03T07:36:46.000Z' } } },
