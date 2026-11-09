@@ -188,7 +188,7 @@ describe('F5 ltm authentication', () => {
     expect(event).toMatchObject({
       event: {
         action: 'user-login-disallowed',
-        category: 'authentication',
+        category: ['authentication'],
         outcome: 'failure',
         reason: 'is not an administrator, does not have a UID of zero, and has not been assigned a role on a partition.',
       },
