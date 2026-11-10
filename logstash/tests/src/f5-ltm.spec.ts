@@ -52,8 +52,10 @@ describe('F5 ltm pools', () => {
         status: { type: 'monitor', current: 'down', forced: false, previous: 'up', previous_duration: '0hr:0min:27sec' },
         monitor: { name: '/Common/lpt_http', status: 'down' },
       },
+      server: { address: '192.0.2.1', ip: '192.0.2.1', port: 80 },
       related: { ip: ['192.0.2.1'] },
     });
+    expect(event.f5_bigip.node.route_domain).toBeUndefined();
     expect(event.error).toBeUndefined();
   });
 
@@ -89,6 +91,7 @@ describe('F5 ltm pools', () => {
     });
     // The address is not in the message
     expect(event.f5_bigip.node.address).toBeUndefined();
+    expect(event.server).toBeUndefined();
     expect(event.related).toBeUndefined();
   });
 
@@ -147,9 +150,11 @@ describe('F5 ltm nodes', () => {
         status: { type: 'monitor', current: 'down', forced: false, previous: 'unchecked', previous_duration: '0hr:0min:16sec' },
         monitor: { name: '/Common/icmp', status: 'down' },
       },
+      server: { address: '192.0.2.250', ip: '192.0.2.250' },
       related: { ip: ['192.0.2.250'] },
     });
     expect(event.f5_bigip.pool).toBeUndefined();
+    expect(event.server.port).toBeUndefined();
   });
 
   it('Parses nodes without a monitor', async () => {
@@ -176,6 +181,25 @@ describe('F5 ltm nodes', () => {
         node: { name: '/Common/192.0.2.1', address: '192.0.2.1' },
         status: { type: 'session', current: 'enabled', forced: false },
       },
+    });
+  });
+  it('Parses the route domain', async () => {
+    // The lab lines are in route domain 0, these have a route domain suffix added
+    const member = await sendF5('Nov 10 01:00:40 localhost.localdomain notice mcpd[5217]: 01070727:5: Pool /Common/lpt_pool member /Common/192.0.2.1%2:80 monitor status up. [ /Common/gateway_icmp: up ]  [ was down for 0hr:0min:3sec ]');
+    const node = await sendF5('Nov 10 01:00:40 localhost.localdomain notice mcpd[5217]: 01070641:5: Node /Common/lpt_node address 2001:db8::1%2 session status enabled.');
+
+    expect(member).toMatchObject({
+      f5_bigip: {
+        pool: { member: { name: '/Common/192.0.2.1%2:80', port: 80 } },
+        node: { name: '/Common/192.0.2.1%2', address: '192.0.2.1%2', route_domain: 2 },
+      },
+      server: { address: '192.0.2.1', ip: '192.0.2.1', port: 80 },
+      related: { ip: ['192.0.2.1'] },
+    });
+    expect(node).toMatchObject({
+      f5_bigip: { node: { address: '2001:db8::1%2', route_domain: 2 } },
+      server: { ip: '2001:db8::1' },
+      related: { ip: ['2001:db8::1'] },
     });
   });
 });
