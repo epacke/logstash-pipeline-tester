@@ -37,28 +37,34 @@ describe('F5 log throttling', () => {
 });
 
 describe('F5 ltm pools', () => {
-  it('Parses monitor status down with last error', async () => {
+  it('Parses monitor status down with the reason', async () => {
     const event = await sendF5('Nov  5 02:08:59 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 monitor status down. [ /Common/lpt_http: down; last error: /Common/lpt_http: No successful responses received before deadline. @2026/11/05 02:08:59.  ]  [ was up for 0hr:0min:27sec ]');
 
     expect(event).toMatchObject({
-      event: { code: '01070638', action: 'pool-member-status-change' },
+      event: {
+        code: '01070638',
+        action: 'pool-member-status-change',
+        reason: 'No successful responses received before deadline.',
+      },
       f5_bigip: {
-        pool: { name: '/Common/lpt_pool', member: { name: '/Common/192.0.2.1', port: 80 } },
-        status: { type: 'monitor', current: 'down', previous: 'up', previous_duration: '0hr:0min:27sec' },
+        pool: { name: '/Common/lpt_pool', member: { name: '/Common/192.0.2.1:80', port: 80 } },
+        node: { name: '/Common/192.0.2.1', address: '192.0.2.1' },
+        status: { type: 'monitor', current: 'down', forced: false, previous: 'up', previous_duration: '0hr:0min:27sec' },
         monitor: { name: '/Common/lpt_http', status: 'down' },
       },
-      error: { message: '/Common/lpt_http: No successful responses received before deadline. @2026/11/05 02:08:59.' },
+      related: { ip: ['192.0.2.1'] },
     });
+    expect(event.error).toBeUndefined();
   });
 
   it('Parses monitor status forced down', async () => {
     const event = await sendF5('Nov  5 02:08:24 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 monitor status forced down. [ /Common/lpt_icmp: up ]  [ was up for 0hr:0min:47sec ]');
 
     expect(event.f5_bigip).toMatchObject({
-      status: { type: 'monitor', current: 'forced down', previous: 'up' },
+      status: { type: 'monitor', current: 'down', forced: true, previous: 'up' },
       monitor: { name: '/Common/lpt_icmp', status: 'up' },
     });
-    expect(event.error).toBeUndefined();
+    expect(event.event.reason).toBeUndefined();
   });
 
   it('Parses monitor status up', async () => {
@@ -66,14 +72,24 @@ describe('F5 ltm pools', () => {
 
     expect(event).toMatchObject({
       event: { code: '01070727', action: 'pool-member-status-change' },
-      f5_bigip: { status: { type: 'monitor', current: 'up', previous: 'unchecked', previous_duration: '0hr:0min:1sec' } },
+      f5_bigip: { status: { type: 'monitor', current: 'up', forced: false, previous: 'unchecked', previous_duration: '0hr:0min:1sec' } },
     });
   });
 
-  it('Parses members named after a node', async () => {
+  it('Parses members of a named node', async () => {
     const event = await sendF5('Nov  4 02:29:16 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/always_down-pool member /Common/down-01:7070 monitor status down. [ /Common/http: down; last error: /Common/http: No successful responses received before deadline. @2026/11/04 02:29:16.  ]  [ was unchecked for 0hr:3mins:49sec ]');
 
-    expect(event.f5_bigip.pool).toEqual({ name: '/Common/always_down-pool', member: { name: '/Common/down-01', port: 7070 } });
+    expect(event).toMatchObject({
+      event: { reason: 'No successful responses received before deadline.' },
+      f5_bigip: {
+        pool: { name: '/Common/always_down-pool', member: { name: '/Common/down-01:7070', port: 7070 } },
+        node: { name: '/Common/down-01' },
+        status: { previous: 'unchecked', previous_duration: '0hr:3mins:49sec' },
+      },
+    });
+    // The address is not in the message
+    expect(event.f5_bigip.node.address).toBeUndefined();
+    expect(event.related).toBeUndefined();
   });
 
   it('Parses session status', async () => {
@@ -82,9 +98,22 @@ describe('F5 ltm pools', () => {
     expect(event).toMatchObject({
       event: { code: '01070639', action: 'pool-member-status-change' },
       f5_bigip: {
-        pool: { name: '/Common/lpt_pool', member: { name: '/Common/192.0.2.1', port: 80 } },
-        status: { type: 'session', current: 'forced disabled' },
+        pool: { name: '/Common/lpt_pool', member: { name: '/Common/192.0.2.1:80', port: 80 } },
+        node: { name: '/Common/192.0.2.1', address: '192.0.2.1' },
+        status: { type: 'session', current: 'disabled', forced: true },
       },
+    });
+    expect(event.tags).toBeUndefined();
+  });
+
+  it('Parses members whose node is down', async () => {
+    const event = await sendF5('Nov 10 01:00:24 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/lpt_node_down:80 monitor status node down. [ /Common/gateway_icmp: checking ]  [ was unchecked for 0hr:0min:16sec ]');
+
+    expect(event.f5_bigip).toMatchObject({
+      pool: { member: { name: '/Common/lpt_node_down:80', port: 80 } },
+      node: { name: '/Common/lpt_node_down' },
+      status: { type: 'monitor', current: 'node down', forced: false, previous: 'unchecked' },
+      monitor: { name: '/Common/gateway_icmp', status: 'checking' },
     });
   });
 
@@ -103,6 +132,50 @@ describe('F5 ltm pools', () => {
     expect(event).toMatchObject({
       event: { action: 'pool-members-available' },
       f5_bigip: { pool: { name: '/Common/lpt_pool' } },
+    });
+  });
+});
+
+describe('F5 ltm nodes', () => {
+  it('Parses node monitor status', async () => {
+    const event = await sendF5('Nov 10 01:00:24 localhost.localdomain notice mcpd[5217]: 01070640:5: Node /Common/lpt_node_down address 192.0.2.250 monitor status down. [ /Common/icmp: down ]  [ was unchecked for 0hr:0min:16sec ]');
+
+    expect(event).toMatchObject({
+      event: { code: '01070640', action: 'node-status-change' },
+      f5_bigip: {
+        node: { name: '/Common/lpt_node_down', address: '192.0.2.250' },
+        status: { type: 'monitor', current: 'down', forced: false, previous: 'unchecked', previous_duration: '0hr:0min:16sec' },
+        monitor: { name: '/Common/icmp', status: 'down' },
+      },
+      related: { ip: ['192.0.2.250'] },
+    });
+    expect(event.f5_bigip.pool).toBeUndefined();
+  });
+
+  it('Parses nodes without a monitor', async () => {
+    // Two spaces before "address" and an empty monitor result
+    const event = await sendF5('Nov 10 01:00:40 localhost.localdomain notice mcpd[5217]: 01070640:5: Node /Common/192.0.2.1  address 192.0.2.1 monitor status unchecked. [  ]  [ was forced down for 0hr:0min:3sec ]');
+
+    expect(event).toMatchObject({
+      event: { action: 'node-status-change' },
+      f5_bigip: {
+        node: { name: '/Common/192.0.2.1', address: '192.0.2.1' },
+        status: { type: 'monitor', current: 'unchecked', forced: false, previous: 'forced down' },
+      },
+    });
+    expect(event.f5_bigip.monitor).toBeUndefined();
+    expect(event.tags).toBeUndefined();
+  });
+
+  it('Parses node session status', async () => {
+    const event = await sendF5('Nov 10 01:00:40 localhost.localdomain notice mcpd[5217]: 01070641:5: Node /Common/192.0.2.1 address 192.0.2.1 session status enabled.');
+
+    expect(event).toMatchObject({
+      event: { code: '01070641', action: 'node-status-change' },
+      f5_bigip: {
+        node: { name: '/Common/192.0.2.1', address: '192.0.2.1' },
+        status: { type: 'session', current: 'enabled', forced: false },
+      },
     });
   });
 });

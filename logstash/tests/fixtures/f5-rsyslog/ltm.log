@@ -1,4 +1,4 @@
-# Lines from /var/log/ltm on a lab BIG-IP 17.5.1.11 (2026-11-05), as written by
+# Lines from /var/log/ltm on a lab BIG-IP 17.5.1.11 (November 2026), as written by
 # rsyslog with the template in pipeline/f5-rsyslog/README.md. One line per message format.
 # Lines starting with # and blank lines are ignored by the tests.
 <133>2026-11-05T02:08:24+01:00 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 monitor status forced down. [ /Common/lpt_icmp: up ]  [ was up for 0hr:0min:47sec ]
@@ -6,6 +6,14 @@
 <133>2026-11-04T02:29:16+01:00 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/always_down-pool member /Common/down-01:7070 monitor status down. [ /Common/http: down; last error: /Common/http: No successful responses received before deadline. @2026/11/04 02:29:16.  ]  [ was unchecked for 0hr:3mins:49sec ]
 <133>2026-11-05T02:07:37+01:00 localhost.localdomain notice mcpd[5217]: 01070727:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 monitor status up. [ /Common/lpt_icmp: up ]  [ was unchecked for 0hr:0min:1sec ]
 <133>2026-11-05T02:08:09+01:00 localhost.localdomain notice mcpd[5217]: 01070639:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 session status forced disabled.
+<133>2026-11-10T01:00:24+01:00 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/lpt_node_down:80 monitor status node down. [ /Common/gateway_icmp: checking ]  [ was unchecked for 0hr:0min:16sec ]
+<133>2026-11-10T01:00:25+01:00 localhost.localdomain notice mcpd[5217]: 01070638:5: Pool /Common/lpt_pool member /Common/lpt_node_down:80 monitor status down. [ /Common/gateway_icmp: down; last error: /Common/gateway_icmp: No successful responses received before deadline. @2026/11/10 01:00:25.  ]  [ was node down for 0hr:0min:1sec ]
+<133>2026-11-10T01:00:33+01:00 localhost.localdomain notice mcpd[5217]: 01070639:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 session status node disabled.
+<133>2026-11-10T01:00:40+01:00 localhost.localdomain notice mcpd[5217]: 01070639:5: Pool /Common/lpt_pool member /Common/192.0.2.1:80 session status enabled.
+<133>2026-11-10T01:00:24+01:00 localhost.localdomain notice mcpd[5217]: 01070640:5: Node /Common/lpt_node_down address 192.0.2.250 monitor status down. [ /Common/icmp: down ]  [ was unchecked for 0hr:0min:16sec ]
+<133>2026-11-10T01:00:40+01:00 localhost.localdomain notice mcpd[5217]: 01070640:5: Node /Common/192.0.2.1  address 192.0.2.1 monitor status unchecked. [  ]  [ was forced down for 0hr:0min:3sec ]
+<133>2026-11-10T01:01:11+01:00 localhost.localdomain notice mcpd[5217]: 01070640:5: Node /Common/lpt_node_down address 192.0.2.250 monitor status unchecked. [ /Common/none: unchecked ]  [ was down for 0hr:0min:47sec ]
+<133>2026-11-10T01:00:40+01:00 localhost.localdomain notice mcpd[5217]: 01070641:5: Node /Common/192.0.2.1 address 192.0.2.1 session status enabled.
 <133>2026-11-05T02:08:24+01:00 localhost.localdomain notice mcpd[5217]: 01070807:5: Monitor /Common/lpt_icmp instance 192.0.2.1:0 has been disabled.
 <133>2026-11-05T02:08:31+01:00 localhost.localdomain notice mcpd[5217]: 01070807:5: Monitor /Common/lpt_icmp instance 192.0.2.1:0 has been enabled.
 <131>2026-11-04T02:29:16+01:00 bigip1 err tmm1[19781]: 01010028:3: No members available for pool /Common/always_down_02-pool
